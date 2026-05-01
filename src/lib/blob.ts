@@ -4,8 +4,10 @@ import { put, del, list, type PutBlobResult } from "@vercel/blob";
  * Vercel Blob utilities for image management
  *
  * Environment variable required:
- * BLOB_READ_WRITE_TOKEN - Get from Vercel Dashboard > Storage > Blob
+ * IMAGES_READ_WRITE_TOKEN - Get from Vercel Dashboard > Storage > Blob
  */
+
+const blobToken = () => process.env.IMAGES_READ_WRITE_TOKEN;
 
 export type ImageCategory =
   | "hero"
@@ -29,7 +31,8 @@ export async function uploadImage(
 
   const blob = await put(pathname, file, {
     access: "public",
-    addRandomSuffix: false, // Keep original filename
+    addRandomSuffix: false,
+    token: blobToken(),
   });
 
   return blob;
@@ -39,7 +42,7 @@ export async function uploadImage(
  * Delete an image from Vercel Blob
  */
 export async function deleteImage(url: string): Promise<void> {
-  await del(url);
+  await del(url, { token: blobToken() });
 }
 
 /**
@@ -47,7 +50,7 @@ export async function deleteImage(url: string): Promise<void> {
  */
 export async function listImages(category?: ImageCategory) {
   const prefix = category ? `images/${category}/` : "images/";
-  const { blobs } = await list({ prefix });
+  const { blobs } = await list({ prefix, token: blobToken() });
   return blobs;
 }
 
