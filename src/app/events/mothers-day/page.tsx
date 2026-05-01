@@ -18,7 +18,7 @@ import { getEventById, activityIcons } from "@/data/events";
 export const metadata: Metadata = {
   title: "Mother's Day Mommy & Me Jiu Jitsu - NewGround Kids",
   description:
-    "Celebrate Mother's Day with a special Mommy & Me jiu jitsu class! Ages 3+. Three class times available. Bond with your child on the mats at New Ground Jiu Jitsu.",
+    "Celebrate Mother's Day with a special Mommy & Me jiu jitsu class! Ages 3+. Two class times available. Bond with your child on the mats at New Ground Jiu Jitsu.",
 };
 
 // Floating flower component for decorations
@@ -235,13 +235,13 @@ export default function MothersDayPage() {
               </Badge>
               <h2 className="font-heading mb-4 text-3xl md:text-4xl">Pick Your Time Slot</h2>
               <p className="text-muted-foreground mx-auto max-w-2xl text-lg">
-                Three classes organized by age so every child gets the right experience.
+                Two classes organized by age so every child gets the right experience.
                 Each session includes warm-ups, partner drills with mom, and fun games.
               </p>
             </div>
 
             {/* Time Slot Cards */}
-            <div className="grid gap-8 md:grid-cols-3">
+            <div className="mx-auto grid max-w-4xl gap-8 md:grid-cols-2">
               {event.timeSlots?.map((slot, index) => (
                 <Card
                   key={slot.calEventSlug}
@@ -450,9 +450,12 @@ export default function MothersDayPage() {
                     <p className="mb-2 text-sm font-bold tracking-widest text-white/80 uppercase">
                       Mommy & Me
                     </p>
-                    <p className="font-heading text-5xl">FREE</p>
+                    <p className="font-heading text-5xl">$40</p>
                     <p className="mt-1 text-sm font-medium tracking-wide text-white/90 uppercase">
-                      for mom & child pair
+                      for parent & child pair
+                    </p>
+                    <p className="mt-2 text-xs font-medium tracking-wide text-white/80">
+                      +$10 per additional child
                     </p>
                   </div>
 
@@ -496,11 +499,11 @@ export default function MothersDayPage() {
                     <ul className="mb-6 space-y-2 text-sm text-gray-600">
                       <li className="flex items-center gap-2">
                         <Flower className="h-3 w-3" style={{ color: event.theme?.primary }} />
-                        Moms (or any maternal figure) & their kids
+                        Moms & their kids
                       </li>
                       <li className="flex items-center gap-2">
                         <Flower className="h-3 w-3" style={{ color: event.theme?.primary }} />
-                        Kids ages 3 and up
+                        Kids ages 3 to 8
                       </li>
                       <li className="flex items-center gap-2">
                         <Flower className="h-3 w-3" style={{ color: event.theme?.primary }} />

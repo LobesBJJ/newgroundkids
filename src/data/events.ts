@@ -18,6 +18,7 @@ import {
   IceCream,
   Music,
   TreePine,
+  ShoppingBag,
 } from "lucide-react";
 
 export interface EventActivity {
@@ -103,21 +104,21 @@ export const upcomingEvents: RecurringEvent[] = [
     subtitle: "Train Together. Bond Forever.",
     description:
       "Celebrate Mother's Day with an unforgettable Mommy & Me jiu jitsu class! Moms and kids will learn together, play together, and create memories that last a lifetime. No experience needed — just bring your smile and your mom!",
-    date: "May 10th",
-    dayOfWeek: "Sunday",
-    dropOff: "10:00 AM",
-    pickUp: "2:30 PM",
+    date: "May 9th",
+    dayOfWeek: "Saturday",
+    dropOff: "2:00 PM",
+    pickUp: "4:00 PM",
     location: "New Ground Jiu Jitsu",
     addressLine1: "4617 Van Nuys Blvd, Unit B",
     addressLine2: "Sherman Oaks, CA 91403",
     pricing: {
-      perChild: 0,
-      description: "FREE for mom & child pair",
+      perChild: 40,
+      description: "for parent & child pair",
     },
     activities: [
       { icon: "Shield", label: "Jiu Jitsu Basics" },
       { icon: "Users", label: "Mommy & Me Drills" },
-      { icon: "Flower", label: "Mother's Day Crafts" },
+      { icon: "ShoppingBag", label: "Free Tote Bag" },
       { icon: "Pizza", label: "Snacks & Refreshments" },
     ],
     calEventSlug: "mothers-day-mommy-and-me",
@@ -132,20 +133,14 @@ export const upcomingEvents: RecurringEvent[] = [
       {
         label: "Little Warriors",
         ageRange: "Ages 3–5",
-        time: "10:00 AM – 10:45 AM",
+        time: "2:00 PM – 2:45 PM",
         calEventSlug: "mothers-day-ages-3-5",
       },
       {
         label: "Junior Grapplers",
-        ageRange: "Ages 6–9",
-        time: "11:15 AM – 12:15 PM",
-        calEventSlug: "mothers-day-ages-6-9",
-      },
-      {
-        label: "Youth Warriors",
-        ageRange: "Ages 10+",
-        time: "1:00 PM – 2:00 PM",
-        calEventSlug: "mothers-day-ages-10-plus",
+        ageRange: "Ages 6–8",
+        time: "3:15 PM – 4:00 PM",
+        calEventSlug: "mothers-day-ages-6-8",
       },
     ],
   },
@@ -251,4 +246,5 @@ export const activityIcons: Record<string, LucideIcon> = {
   IceCream,
   Music,
   TreePine,
+  ShoppingBag,
 };
