@@ -121,7 +121,7 @@ export const upcomingEvents: RecurringEvent[] = [
       { icon: "ShoppingBag", label: "Free Tote Bag" },
       { icon: "Pizza", label: "Snacks & Refreshments" },
     ],
-    calEventSlug: "mothers-day-mommy-and-me",
+    calEventSlug: "mother-s-day-event",
     featured: false,
     tagline: "The best gift is time together on the mats.",
     theme: {

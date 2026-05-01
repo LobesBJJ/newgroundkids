@@ -303,7 +303,7 @@ export default function MothersDayPage() {
                     {/* CTA */}
                     <div className="mt-auto">
                       <CalPopupButton
-                        eventType={slot.calEventSlug}
+                        eventType={event.calEventSlug}
                         className="font-heading flex h-12 w-full items-center justify-center gap-2 rounded-full border-2 text-base shadow-lg transition-all hover:scale-[1.02] hover:shadow-xl"
                         style={{
                           borderColor: event.theme?.primary,
