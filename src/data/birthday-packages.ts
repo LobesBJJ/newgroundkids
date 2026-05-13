@@ -153,9 +153,9 @@ export const birthdayGalleryImages: BirthdayImage[] = [
   { id: "3", src: images.birthday.DSC00995, alt: "Instructor with kids" },
   { id: "4", src: images.birthday.DSC00808, alt: "Kids sparring" },
   { id: "5", src: images.birthday.DSC00821, alt: "Training session" },
-  { id: "6", src: images.birthday.DSC06067, alt: "Kid with face paint" },
+  { id: "6", src: images.birthday.DSC06085, alt: "Birthday party fun" },
   { id: "7", src: images.birthday.DSC06065, alt: "Photo booth setup" },
-  { id: "8", src: images.birthday.DSC06057, alt: "Party activities" },
+  { id: "8", src: images.birthday.DSC06037, alt: "Party activities" },
   { id: "9", src: images.birthday.DSC06039, alt: "Kids having fun" },
 ];
 

@@ -59,7 +59,7 @@ const eventTypes = [
     href: "/camps",
     cta: "See Schedule",
     accent: false,
-    image: images.birthday.DSC06067,
+    image: images.birthday.DSC00824,
   },
   {
     icon: Building,
@@ -101,7 +101,6 @@ export default function HomePage() {
   // Images for the diagonal slices hero (using Vercel Blob storage)
   const heroSliceData = [
     { src: images.hero.slide1, alt: "Kids having a blast at camp" },
-    { src: images.hero.slide4, alt: "Martial arts action" },
     { src: images.hero.slide2, alt: "Group activities" },
     { src: images.hero.slide3, alt: "Exciting party games" },
   ];
