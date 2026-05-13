@@ -13,7 +13,6 @@ export const images = {
     slide1: `${BLOB_BASE}/images/hero/DSC00727.jpg`,
     slide2: `${BLOB_BASE}/images/hero/DSC00789.jpg`,
     slide3: `${BLOB_BASE}/images/hero/DSC00995.jpg`,
-    slide4: `${BLOB_BASE}/images/hero/DSC06067.JPG`,
   },
 
   // Birthday party images
@@ -37,9 +36,7 @@ export const images = {
     DSC06037: `${BLOB_BASE}/images/birthday/DSC06037%202.JPG`,
     DSC06039: `${BLOB_BASE}/images/birthday/DSC06039.JPG`,
     DSC06056: `${BLOB_BASE}/images/birthday/DSC06056%202.JPG`,
-    DSC06057: `${BLOB_BASE}/images/birthday/DSC06057.JPG`,
     DSC06065: `${BLOB_BASE}/images/birthday/DSC06065.JPG`,
-    DSC06067: `${BLOB_BASE}/images/birthday/DSC06067.JPG`,
     DSC06085: `${BLOB_BASE}/images/birthday/DSC06085.JPG`,
   },
 
@@ -62,7 +59,6 @@ export const images = {
     DSC00789: `${BLOB_BASE}/images/gallery/DSC00789.jpg`,
     DSC00808: `${BLOB_BASE}/images/gallery/DSC00808.jpg`,
     DSC00995: `${BLOB_BASE}/images/gallery/DSC00995.jpg`,
-    DSC06057: `${BLOB_BASE}/images/gallery/DSC06057.JPG`,
   },
 
   // Background images

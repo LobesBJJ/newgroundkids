@@ -69,7 +69,7 @@ export default function AboutPage() {
   const heroSlices = [
     { src: images.backgrounds.about, alt: "Kids having fun at NewGround Kids" },
     { src: images.birthday.DSC00808, alt: "Birthday party celebration" },
-    { src: images.birthday.DSC06067, alt: "Kids activities" },
+    { src: images.birthday.DSC00821, alt: "Kids activities" },
   ];
 
   return (
