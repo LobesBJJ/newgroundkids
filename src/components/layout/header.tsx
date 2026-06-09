@@ -2,25 +2,144 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { useState, useId } from "react";
+import { usePathname } from "next/navigation";
+import { useState, useId, useRef, useEffect, useCallback } from "react";
 import { Menu, Phone, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/sheet";
 import * as VisuallyHidden from "@radix-ui/react-visually-hidden";
-import {
-  NavigationMenu,
-  NavigationMenuItem,
-  NavigationMenuLink,
-  NavigationMenuList,
-  NavigationMenuTrigger,
-  NavigationMenuContent,
-} from "@/components/ui/navigation-menu";
 import { siteConfig } from "@/config/site";
+import { cn } from "@/lib/utils";
+
+type NavChild = { title: string; href: string };
+
+/**
+ * Desktop nav item with a submenu.
+ *
+ * Opens on hover/focus (with a short close delay + an invisible bridge so the
+ * pointer can travel from the trigger into the panel without it snapping shut).
+ * The trigger itself is a real link to the section overview, so a *click*
+ * always does one predictable thing — navigate — instead of fighting the hover
+ * state and toggling unpredictably (the old behavior).
+ */
+function NavDropdown({ title, href, items }: { title: string; href: string; items: readonly NavChild[] }) {
+  const pathname = usePathname();
+  const [open, setOpen] = useState(false);
+  const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const cancelClose = useCallback(() => {
+    if (closeTimer.current) {
+      clearTimeout(closeTimer.current);
+      closeTimer.current = null;
+    }
+  }, []);
+
+  const openMenu = useCallback(() => {
+    cancelClose();
+    setOpen(true);
+  }, [cancelClose]);
+
+  const closeSoon = useCallback(() => {
+    cancelClose();
+    closeTimer.current = setTimeout(() => setOpen(false), 140);
+  }, [cancelClose]);
+
+  // Clean up any pending close timer on unmount.
+  useEffect(() => cancelClose, [cancelClose]);
+
+  const sectionActive = pathname === href || items.some((c) => pathname === c.href);
+
+  return (
+    <li
+      className="relative"
+      onMouseEnter={openMenu}
+      onMouseLeave={closeSoon}
+      onFocus={openMenu}
+      onBlur={(e) => {
+        if (!e.currentTarget.contains(e.relatedTarget as Node | null)) closeSoon();
+      }}
+      onKeyDown={(e) => {
+        if (e.key === "Escape") setOpen(false);
+      }}
+    >
+      <Link
+        href={href}
+        aria-haspopup="menu"
+        aria-expanded={open}
+        onClick={() => setOpen(false)}
+        className={cn(
+          "font-heading inline-flex h-10 w-max items-center justify-center gap-1 rounded-md px-4 py-2 text-sm tracking-wide uppercase transition-colors outline-none",
+          "hover:bg-muted hover:text-foreground focus-visible:bg-muted focus-visible:text-foreground",
+          (open || sectionActive) && "bg-muted text-foreground",
+        )}
+      >
+        {title}
+        <ChevronDown
+          className={cn("h-3.5 w-3.5 transition-transform duration-200", open && "rotate-180")}
+          aria-hidden="true"
+        />
+      </Link>
+
+      {/* Submenu panel — a DOM child of this <li>, so hovering it keeps the menu
+          open. The pt-2 wrapper bridges the visual gap below the trigger. */}
+      <div
+        className={cn(
+          "absolute top-full left-0 z-50 min-w-[230px] pt-2 transition-all duration-150",
+          open ? "visible translate-y-0 opacity-100" : "invisible -translate-y-1 opacity-0",
+        )}
+      >
+        <ul role="menu" aria-label={title} className="bg-popover grid gap-1 rounded-xl border-2 p-2 shadow-lg">
+          {items.map((child) => {
+            const childActive = pathname === child.href;
+            return (
+              <li key={child.title} role="none">
+                <Link
+                  href={child.href}
+                  role="menuitem"
+                  onClick={() => setOpen(false)}
+                  className={cn(
+                    "font-heading block rounded-md px-3 py-2 text-sm tracking-wide transition-colors outline-none",
+                    "hover:bg-muted hover:text-foreground focus-visible:bg-muted focus-visible:text-foreground",
+                    childActive && "bg-muted text-foreground",
+                  )}
+                >
+                  {child.title}
+                </Link>
+              </li>
+            );
+          })}
+          <li role="none" className="border-border/60 mt-1 border-t pt-1">
+            <Link
+              href={href}
+              role="menuitem"
+              onClick={() => setOpen(false)}
+              className="text-muted-foreground hover:text-foreground flex items-center gap-1.5 rounded-md px-3 py-2 text-xs font-semibold tracking-wide uppercase transition-colors"
+            >
+              View all {title}
+              <span aria-hidden="true">→</span>
+            </Link>
+          </li>
+        </ul>
+      </div>
+    </li>
+  );
+}
 
 export function Header() {
   const [isOpen, setIsOpen] = useState(false);
-  const [eventsOpen, setEventsOpen] = useState(false);
   const sheetId = useId();
+  const pathname = usePathname();
+
+  // Pre-expand the mobile submenu that contains the current route (computed once on mount).
+  const [openSection, setOpenSection] = useState<string | null>(() => {
+    const active = siteConfig.mainNav.find(
+      (item) =>
+        "children" in item &&
+        item.children &&
+        (pathname === item.href || item.children.some((c) => pathname === c.href)),
+    );
+    return active ? active.title : null;
+  });
 
   return (
     <header className="border-border bg-background/95 supports-[backdrop-filter]:bg-background/85 sticky top-0 z-50 w-full border-b-2 backdrop-blur">
@@ -39,46 +158,28 @@ export function Header() {
         </Link>
 
         {/* Desktop Navigation */}
-        <NavigationMenu className="hidden flex-1 justify-center lg:flex">
-          <NavigationMenuList className="gap-1">
+        <nav className="hidden flex-1 justify-center lg:flex" aria-label="Main">
+          <ul className="flex items-center gap-1">
             {siteConfig.mainNav.map((item) =>
               "children" in item && item.children ? (
-                <NavigationMenuItem key={item.title}>
-                  <NavigationMenuTrigger className="font-heading bg-background hover:bg-muted hover:text-foreground focus:bg-muted focus:text-foreground h-10 px-4 py-2 text-sm tracking-wide uppercase">
-                    {item.title}
-                  </NavigationMenuTrigger>
-                  <NavigationMenuContent>
-                    <ul className="grid w-[200px] gap-1 p-2">
-                      {item.children.map((child) => (
-                        <li key={child.title}>
-                          <NavigationMenuLink asChild>
-                            <Link
-                              href={child.href}
-                              className="font-heading hover:bg-muted hover:text-foreground focus:bg-muted focus:text-foreground block rounded-md px-3 py-2 text-sm tracking-wide transition-colors"
-                            >
-                              {child.title}
-                            </Link>
-                          </NavigationMenuLink>
-                        </li>
-                      ))}
-                    </ul>
-                  </NavigationMenuContent>
-                </NavigationMenuItem>
+                <NavDropdown key={item.title} title={item.title} href={item.href} items={item.children} />
               ) : (
-                <NavigationMenuItem key={item.title}>
-                  <NavigationMenuLink asChild>
-                    <Link
-                      href={item.href}
-                      className="group bg-background font-heading hover:bg-muted hover:text-foreground focus:bg-muted focus:text-foreground inline-flex h-10 w-max items-center justify-center rounded-md px-4 py-2 text-sm tracking-wide uppercase transition-colors focus:outline-none disabled:pointer-events-none disabled:opacity-50"
-                    >
-                      {item.title}
-                    </Link>
-                  </NavigationMenuLink>
-                </NavigationMenuItem>
+                <li key={item.title}>
+                  <Link
+                    href={item.href}
+                    className={cn(
+                      "font-heading inline-flex h-10 w-max items-center justify-center rounded-md px-4 py-2 text-sm tracking-wide uppercase transition-colors outline-none",
+                      "hover:bg-muted hover:text-foreground focus-visible:bg-muted focus-visible:text-foreground",
+                      pathname === item.href && "bg-muted text-foreground",
+                    )}
+                  >
+                    {item.title}
+                  </Link>
+                </li>
               ),
             )}
-          </NavigationMenuList>
-        </NavigationMenu>
+          </ul>
+        </nav>
 
         {/* Desktop CTA */}
         <div className="ml-auto hidden shrink-0 items-center gap-4 lg:flex">
@@ -127,23 +228,42 @@ export function Header() {
                   "children" in item && item.children ? (
                     <li key={item.title}>
                       <button
-                        onClick={() => setEventsOpen(!eventsOpen)}
+                        onClick={() => setOpenSection((s) => (s === item.title ? null : item.title))}
+                        aria-expanded={openSection === item.title}
                         className="font-heading hover:bg-accent/10 hover:text-accent active:bg-accent/20 flex w-full items-center justify-between rounded-lg px-4 py-3.5 text-base tracking-wide uppercase transition-all"
                         style={{ animationDelay: `${index * 50}ms` }}
                       >
                         {item.title}
                         <ChevronDown
-                          className={`h-4 w-4 transition-transform ${eventsOpen ? "rotate-180" : ""}`}
+                          className={cn(
+                            "h-4 w-4 transition-transform",
+                            openSection === item.title && "rotate-180",
+                          )}
                         />
                       </button>
-                      {eventsOpen && (
-                        <ul className="ml-4 space-y-1 border-l-2 pl-2">
+                      {openSection === item.title && (
+                        <ul className="mt-1 ml-4 space-y-1 border-l-2 pl-2">
+                          <li>
+                            <Link
+                              href={item.href}
+                              onClick={() => setIsOpen(false)}
+                              className={cn(
+                                "font-heading hover:bg-accent/10 hover:text-accent active:bg-accent/20 flex items-center rounded-lg px-4 py-2.5 text-sm tracking-wide uppercase transition-all",
+                                pathname === item.href && "bg-accent/10 text-accent",
+                              )}
+                            >
+                              All {item.title}
+                            </Link>
+                          </li>
                           {item.children.map((child) => (
                             <li key={child.title}>
                               <Link
                                 href={child.href}
                                 onClick={() => setIsOpen(false)}
-                                className="font-heading hover:bg-accent/10 hover:text-accent active:bg-accent/20 flex items-center rounded-lg px-4 py-2.5 text-sm tracking-wide uppercase transition-all"
+                                className={cn(
+                                  "font-heading hover:bg-accent/10 hover:text-accent active:bg-accent/20 flex items-center rounded-lg px-4 py-2.5 text-sm tracking-wide uppercase transition-all",
+                                  pathname === child.href && "bg-accent/10 text-accent",
+                                )}
                               >
                                 {child.title}
                               </Link>
@@ -157,7 +277,10 @@ export function Header() {
                       <Link
                         href={item.href}
                         onClick={() => setIsOpen(false)}
-                        className="font-heading hover:bg-accent/10 hover:text-accent active:bg-accent/20 flex items-center rounded-lg px-4 py-3.5 text-base tracking-wide uppercase transition-all"
+                        className={cn(
+                          "font-heading hover:bg-accent/10 hover:text-accent active:bg-accent/20 flex items-center rounded-lg px-4 py-3.5 text-base tracking-wide uppercase transition-all",
+                          pathname === item.href && "bg-accent/10 text-accent",
+                        )}
                         style={{ animationDelay: `${index * 50}ms` }}
                       >
                         {item.title}
