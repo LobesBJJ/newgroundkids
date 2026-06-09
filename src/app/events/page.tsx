@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Heart, Flower, Flower2, Sun, ArrowRight } from "lucide-react";
+import { Heart, Flower, Flower2, Sun, Award, ArrowRight } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -27,6 +27,11 @@ const eventMeta: Record<string, { icon: typeof Heart; href: string; colors: { bg
     icon: Flower,
     href: "/events/mothers-day",
     colors: { bg: "#FAF5FF", border: "#9333EA", text: "#581C87", badge: "#F3E8FF" },
+  },
+  "fathers-day-2026": {
+    icon: Award,
+    href: "/events/fathers-day",
+    colors: { bg: "#FEF2F2", border: "#DC2626", text: "#7F1D1D", badge: "#FEE2E2" },
   },
   "spring-2026": {
     icon: Flower2,

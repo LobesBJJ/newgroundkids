@@ -19,6 +19,8 @@ import {
   Music,
   TreePine,
   ShoppingBag,
+  Coffee,
+  Donut,
 } from "lucide-react";
 
 export interface EventActivity {
@@ -145,6 +147,39 @@ export const upcomingEvents: RecurringEvent[] = [
     ],
   },
   {
+    id: "fathers-day-2026",
+    name: "Father's Day Daddy & Me Jiu Jitsu",
+    emoji: "🥋",
+    subtitle: "Intro Jiu Jitsu for Dads & Kids",
+    description:
+      "Celebrate Father's Day on the mats! Dads and kids jump into an easy, beginner-friendly intro jiu jitsu class — learning together, drilling together, and making memories that stick. No experience needed, just bring your dad (or your kid)! Hang out after for fresh donuts and hot coffee, on us.",
+    date: "June 21st",
+    dayOfWeek: "Sunday",
+    dropOff: "9:00 AM",
+    pickUp: "10:00 AM",
+    location: "New Ground Jiu Jitsu",
+    addressLine1: "4617 Van Nuys Blvd, Unit B",
+    addressLine2: "Sherman Oaks, CA 91403",
+    pricing: {
+      perChild: 40,
+      description: "for dad & child pair",
+    },
+    activities: [
+      { icon: "Shield", label: "Intro Jiu Jitsu" },
+      { icon: "Users", label: "Daddy & Me Drills" },
+      { icon: "Donut", label: "Fresh Donuts After" },
+      { icon: "Coffee", label: "Coffee Bar for Dads" },
+    ],
+    calEventSlug: "father-s-day-event",
+    featured: false,
+    tagline: "Hit the mats together — donuts & coffee are on us.",
+    theme: {
+      primary: "#DC2626", // Red-600
+      secondary: "#FEE2E2", // Red-100
+      burstColor: "#DC2626",
+    },
+  },
+  {
     id: "spring-2026",
     name: "Spring Fling Parents Night Out",
     emoji: "🌸",
@@ -217,6 +252,7 @@ export const getEventBySlug = (slug: string) => {
   const slugMap: Record<string, string> = {
     valentines: "valentines-2026",
     "mothers-day": "mothers-day-2026",
+    "fathers-day": "fathers-day-2026",
     spring: "spring-2026",
     summer: "summer-2026",
   };
@@ -247,4 +283,6 @@ export const activityIcons: Record<string, LucideIcon> = {
   Music,
   TreePine,
   ShoppingBag,
+  Coffee,
+  Donut,
 };
