@@ -170,7 +170,7 @@ export const upcomingEvents: RecurringEvent[] = [
       { icon: "Donut", label: "Fresh Donuts After" },
       { icon: "Coffee", label: "Coffee Bar for Dads" },
     ],
-    calEventSlug: "father-s-day-event",
+    calEventSlug: "daddy-and-me-intro-to-jiu-jitsu",
     featured: false,
     tagline: "Hit the mats together — donuts & coffee are on us.",
     theme: {
