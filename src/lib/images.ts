@@ -5,7 +5,7 @@
  * Use with next/image for automatic optimization.
  */
 
-const BLOB_BASE = "https://hflb0i32sg7a4vfl.public.blob.vercel-storage.com";
+const BLOB_BASE = "https://4hkpylwqqoo37bmy.public.blob.vercel-storage.com";
 
 export const images = {
   // Hero section images
