@@ -15,6 +15,7 @@ import {
   Medal,
   Zap,
   Star,
+  Users,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 
@@ -330,8 +331,17 @@ export function EventPage({ event }: { event: RecurringEvent }) {
                   }}
                 >
                   <HeroIcon className="h-6 w-6 fill-current" />
-                  Book Now - ${event.pricing.perChild}/child
+                  Book Now - ${event.pricing.perChild}
+                  {event.addOn ? " first child" : "/child"}
                 </CalPopupButton>
+                {event.addOn && (
+                  <p
+                    className="animate-slide-up animation-delay-400 mt-4 text-base font-semibold md:text-lg"
+                    style={{ color: theme.textColor }}
+                  >
+                    + ${event.addOn.price} {event.addOn.description}
+                  </p>
+                )}
               </div>
             </div>
 
@@ -531,6 +541,11 @@ export function EventPage({ event }: { event: RecurringEvent }) {
                     <p className="mt-1 text-sm font-medium tracking-wide text-white/90 uppercase">
                       {event.pricing.description}
                     </p>
+                    {event.addOn && (
+                      <p className="mt-3 inline-block rounded-full border border-white/40 bg-white/15 px-4 py-1 text-sm font-semibold">
+                        + ${event.addOn.price} {event.addOn.description}
+                      </p>
+                    )}
                   </div>
 
                   <CardContent className="flex flex-1 flex-col p-6">
@@ -571,8 +586,32 @@ export function EventPage({ event }: { event: RecurringEvent }) {
                         style={{ borderColor: event.theme?.primary, color: event.theme?.primary }}
                       >
                         <HeroIcon className="h-4 w-4 fill-current" />
-                        Book Now - ${event.pricing.perChild}/child
+                        {event.addOn
+                          ? `Book First Child - $${event.pricing.perChild}`
+                          : `Book Now - $${event.pricing.perChild}/child`}
                       </CalPopupButton>
+
+                      {event.addOn && (
+                        <>
+                          <CalPopupButton
+                            eventType={event.addOn.calEventSlug}
+                            className="font-heading mt-3 flex h-11 w-full items-center justify-center gap-2 rounded-full border-2 border-dashed bg-white text-base transition-all hover:scale-[1.02] hover:shadow-md"
+                            style={{
+                              borderColor: event.theme?.primary,
+                              color: event.theme?.primary,
+                              backgroundColor: event.theme?.secondary,
+                            }}
+                          >
+                            <Users className="h-4 w-4" />
+                            Add a Sibling - ${event.addOn.price}
+                          </CalPopupButton>
+                          {event.addOn.note && (
+                            <p className="text-muted-foreground mt-2 text-center text-xs">
+                              {event.addOn.note}
+                            </p>
+                          )}
+                        </>
+                      )}
 
                       <p className="text-muted-foreground mt-4 text-center text-sm">
                         Questions? Call{" "}
@@ -587,7 +626,9 @@ export function EventPage({ event }: { event: RecurringEvent }) {
 
                       <p className="text-muted-foreground mt-3 text-center text-xs">
                         <Info className="mr-1 inline h-3 w-3" />
-                        Select number of children at checkout. Spots limited!
+                        {event.addOn
+                          ? "One booking per child. Spots limited!"
+                          : "Select number of children at checkout. Spots limited!"}
                       </p>
                     </div>
                   </CardContent>
