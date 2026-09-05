@@ -68,6 +68,9 @@ export interface RecurringEvent {
     description: string; // e.g. "each additional child from the same family"
     calEventSlug: string;
     note?: string; // shown under the add-on button
+    // Step-by-step instructions for booking multiple kids (rendered as numbered tiles)
+    steps?: { title: string; detail: string }[];
+    example?: string; // e.g. "3 kids = $50 + $10 + $10 = $70"
   };
   // Optional flyer image (served from /public) — shown in the hero and downloadable
   flyer?: {
@@ -114,7 +117,25 @@ export const upcomingEvents: RecurringEvent[] = [
       price: 10,
       description: "each additional child from the same family",
       calEventSlug: "all-sports-showdown-sibling",
-      note: "Register your first child first, then book one add-on per additional sibling.",
+      note: "Book your first child first, then add one sibling booking per additional child. Full steps below.",
+      steps: [
+        {
+          title: "Book your first child",
+          detail:
+            "Tap \u201cBook First Child \u2013 $50\u201d, choose the 4:00 PM slot, enter your name and email, and pay. You\u2019ll get a confirmation email right away.",
+        },
+        {
+          title: "Add each sibling",
+          detail:
+            "Come back to this page and tap \u201cAdd a Sibling \u2013 $10\u201d. Choose the same 4:00 PM slot, enter the sibling\u2019s name plus the name of the child you already registered, and pay. Do this once for every additional sibling.",
+        },
+        {
+          title: "Check your inbox",
+          detail:
+            "Each child gets their own confirmation email \u2014 that\u2019s their spot. Nothing to print; just bring the kids on the 19th!",
+        },
+      ],
+      example: "Example: 3 kids = one $50 booking + two $10 sibling bookings = $70 total.",
     },
     activities: [
       { icon: "Timer", label: "2 Hours of Competitive Games" },
