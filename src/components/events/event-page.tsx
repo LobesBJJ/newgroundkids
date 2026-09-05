@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { Fredoka } from "next/font/google";
 import {
   CalendarDays,
   Clock,
@@ -16,6 +17,9 @@ import {
   Zap,
   Star,
   Users,
+  Download,
+  CheckCircle2,
+  ShieldCheck,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 
@@ -30,6 +34,44 @@ import { CalPopupButton } from "@/components/ui/cal-embed";
 import { images } from "@/lib/images";
 import { siteConfig } from "@/config/site";
 import { activityIcons, type RecurringEvent } from "@/data/events";
+
+// Playful rounded display font (used by flyer-style events)
+const fredoka = Fredoka({ subsets: ["latin"], weight: ["600", "700"], display: "swap" });
+
+// Rainbow lettering with a white outline, like the printed flyer
+function RainbowText({
+  text,
+  colors,
+  className,
+}: {
+  text: string;
+  colors: string[];
+  className?: string;
+}) {
+  let i = 0;
+  return (
+    <span className={className} aria-label={text}>
+      {text.replace(/-/g, "\u2011").split("").map((ch, idx) => {
+        if (ch === " ") return <span key={idx}> </span>;
+        const color = colors[i++ % colors.length];
+        return (
+          <span
+            key={idx}
+            aria-hidden
+            style={{
+              color,
+              WebkitTextStroke: "0.09em white",
+              paintOrder: "stroke fill",
+              textShadow: "0.06em 0.08em 0 rgba(0,0,0,0.18)",
+            }}
+          >
+            {ch}
+          </span>
+        );
+      })}
+    </span>
+  );
+}
 
 // Floating icon component for decorations
 function FloatingIcon({
@@ -71,6 +113,13 @@ interface EventThemeConfig {
   ctaShadowColor: string;
   ctaHoverShadowColor: string;
   footerTextColor: string;
+  // Optional flyer-style extras
+  playful?: boolean; // rounded display font + rainbow title
+  heroBackground?: string; // CSS gradient overriding heroBgColor
+  rainbow?: string[];
+  bannerBackground?: string;
+  darkCardColor?: string;
+  accentCardColor?: string;
 }
 
 export function getThemeConfig(eventId: string): EventThemeConfig {
@@ -90,6 +139,12 @@ export function getThemeConfig(eventId: string): EventThemeConfig {
       ctaShadowColor: "rgba(37,99,235,0.4)",
       ctaHoverShadowColor: "rgba(37,99,235,0.5)",
       footerTextColor: "#1D4ED8",
+      playful: true,
+      heroBackground: "linear-gradient(180deg, #FFD54A 0%, #F8B933 42%, #7CC242 68%, #5DB146 100%)",
+      rainbow: ["#F7811E", "#FFC61B", "#6CBF3F", "#EE3D8B", "#2FA8E1"],
+      bannerBackground: "linear-gradient(180deg, #38B6EA 0%, #1E8FD1 100%)",
+      darkCardColor: "#4A4A4C",
+      accentCardColor: "#EE3D8B",
     };
   }
 
@@ -215,7 +270,10 @@ export function EventPage({ event }: { event: RecurringEvent }) {
         {/* Hero Section */}
         <section
           className="relative overflow-hidden py-16 md:py-24"
-          style={{ backgroundColor: theme.heroBgColor }}
+          style={{
+            backgroundColor: theme.heroBgColor,
+            backgroundImage: theme.heroBackground,
+          }}
         >
           {/* Sunburst Background Pattern */}
           <div
@@ -287,94 +345,192 @@ export function EventPage({ event }: { event: RecurringEvent }) {
           </div>
 
           <Container className="relative z-10">
-            <div className="text-center">
-              <Badge
-                className="animate-slide-down mb-6 border-2 bg-white/80 hover:bg-white"
-                style={{ borderColor: theme.burstColors[1], color: event.theme?.primary }}
-              >
-                <HeroIcon
-                  className="mr-2 h-4 w-4 fill-current"
-                  style={{ color: event.theme?.primary }}
-                />
-                {event.dayOfWeek}, {event.date}
-              </Badge>
-
-              <h1
-                className="animate-slide-up font-heading mb-4 text-5xl leading-tight md:text-6xl lg:text-7xl"
-                style={{ color: theme.headingColor }}
-              >
-                {event.name}
-              </h1>
-
-              <p
-                className="animate-slide-up animation-delay-100 font-heading mb-6 text-2xl md:text-3xl"
-                style={{ color: event.theme?.primary }}
-              >
-                {event.subtitle}
-              </p>
-
-              <p
-                className="animation-delay-200 animate-slide-up mx-auto max-w-2xl text-lg md:text-xl"
-                style={{ color: `${theme.textColor}CC` }}
-              >
-                {event.tagline}
-              </p>
-
-              {/* CTA Button */}
-              <div className="animate-slide-up animation-delay-400 mt-8">
-                <CalPopupButton
-                  eventType={event.calEventSlug}
-                  className="font-heading inline-flex h-16 items-center justify-center gap-3 rounded-full border-4 border-white px-12 text-xl text-white transition-all hover:scale-105"
-                  style={{
-                    backgroundColor: theme.ctaBgColor,
-                    boxShadow: `0 8px 30px ${theme.ctaShadowColor}`,
-                  }}
-                >
-                  <HeroIcon className="h-6 w-6 fill-current" />
-                  Book Now - ${event.pricing.perChild}
-                  {event.addOn ? " first child" : "/child"}
-                </CalPopupButton>
-                {event.addOn && (
-                  <p
-                    className="animate-slide-up animation-delay-400 mt-4 text-base font-semibold md:text-lg"
-                    style={{ color: theme.textColor }}
-                  >
-                    + ${event.addOn.price} {event.addOn.description}
-                  </p>
-                )}
-              </div>
-            </div>
-
-            {/* Hero Image */}
-            <div className="relative mx-auto mt-12 max-w-2xl">
-              <div className="relative aspect-[16/10] w-full overflow-hidden rounded-3xl border-4 border-white shadow-2xl">
-                <Image
-                  src={images.birthday.DSC00995}
-                  alt="Kids having fun at New Ground"
-                  fill
-                  className="object-cover"
-                  priority
-                />
+            <div
+              className={
+                event.flyer
+                  ? "grid items-center gap-10 lg:grid-cols-[1.15fr_0.85fr] lg:gap-16"
+                  : ""
+              }
+            >
+              <div className={event.flyer ? "text-center lg:text-left" : "text-center"}>
                 <div
-                  className="absolute inset-0"
-                  style={{
-                    background: `linear-gradient(to top, ${theme.headingColor}33, transparent)`,
-                  }}
-                />
+                  className={`mb-6 flex flex-wrap items-center gap-2 ${
+                    event.flyer ? "justify-center lg:justify-start" : "justify-center"
+                  }`}
+                >
+                  <Badge
+                    className="animate-slide-down border-2 bg-white/90 hover:bg-white"
+                    style={{ borderColor: theme.burstColors[1], color: event.theme?.primary }}
+                  >
+                    <HeroIcon
+                      className="mr-2 h-4 w-4 fill-current"
+                      style={{ color: event.theme?.primary }}
+                    />
+                    {event.dayOfWeek}, {event.date}
+                    <span className="hidden sm:inline">
+                      {" "}· {event.dropOff}–{event.pickUp}
+                    </span>
+                  </Badge>
+                  {event.audience && (
+                    <Badge
+                      className="animate-slide-down border-2 border-white text-white"
+                      style={{ backgroundColor: theme.accentCardColor || theme.gradientDark }}
+                    >
+                      <ShieldCheck className="mr-1.5 h-4 w-4" />
+                      {event.audience}
+                    </Badge>
+                  )}
+                </div>
+
+                <h1
+                  className={`animate-slide-up mb-4 text-5xl leading-[1.05] md:text-6xl lg:text-7xl ${
+                    theme.playful ? fredoka.className + " font-bold tracking-tight" : "font-heading"
+                  }`}
+                  style={theme.playful ? undefined : { color: theme.headingColor }}
+                >
+                  {theme.playful && theme.rainbow ? (
+                    <RainbowText text={event.name} colors={theme.rainbow} />
+                  ) : (
+                    event.name
+                  )}
+                </h1>
+
+                <p
+                  className={`animate-slide-up animation-delay-100 mb-6 text-2xl md:text-3xl ${
+                    theme.playful ? fredoka.className + " font-semibold text-white drop-shadow-md" : "font-heading"
+                  }`}
+                  style={theme.playful ? undefined : { color: event.theme?.primary }}
+                >
+                  {event.subtitle}
+                </p>
+
+                <p
+                  className={`animation-delay-200 animate-slide-up max-w-2xl text-lg md:text-xl ${
+                    event.flyer ? "mx-auto lg:mx-0" : "mx-auto"
+                  }`}
+                  style={{ color: theme.playful ? "#1F2937" : `${theme.textColor}CC` }}
+                >
+                  {event.tagline}
+                </p>
+
+                {/* Price cloud (flyer style) */}
+                {theme.playful && (
+                  <div
+                    className={`animate-slide-up animation-delay-200 mt-8 inline-flex -rotate-2 items-center gap-4 rounded-[2.5rem] bg-white px-7 py-4 shadow-[0_10px_30px_rgba(0,0,0,0.15)] ${fredoka.className}`}
+                  >
+                    <div className="text-center leading-none">
+                      <div className="text-4xl font-bold" style={{ color: "#1F2937" }}>
+                        ${event.pricing.perChild}
+                      </div>
+                      <div className="mt-1 text-xs font-semibold tracking-wide uppercase text-gray-600">
+                        {event.pricing.description}
+                      </div>
+                    </div>
+                    {event.addOn && (
+                      <>
+                        <div className="h-10 w-px bg-gray-200" />
+                        <div className="text-center leading-none">
+                          <div className="text-3xl font-bold" style={{ color: event.theme?.primary }}>
+                            +${event.addOn.price}
+                          </div>
+                          <div className="mt-1 text-xs font-semibold tracking-wide uppercase text-gray-600">
+                            each additional
+                          </div>
+                        </div>
+                      </>
+                    )}
+                  </div>
+                )}
+
+                {/* CTA Button */}
+                <div className="animate-slide-up animation-delay-400 mt-8">
+                  <CalPopupButton
+                    eventType={event.calEventSlug}
+                    className={`inline-flex h-16 items-center justify-center gap-3 rounded-full border-4 border-white px-12 text-xl text-white transition-all hover:scale-105 ${
+                      theme.playful ? fredoka.className + " font-bold" : "font-heading"
+                    }`}
+                    style={{
+                      backgroundColor: theme.ctaBgColor,
+                      boxShadow: `0 8px 30px ${theme.ctaShadowColor}`,
+                    }}
+                  >
+                    <HeroIcon className="h-6 w-6 fill-current" />
+                    {theme.playful ? "Sign Up" : `Book Now - $${event.pricing.perChild}`}
+                    {!theme.playful && (event.addOn ? " first child" : "/child")}
+                  </CalPopupButton>
+                  {event.addOn && !theme.playful && (
+                    <p
+                      className="animate-slide-up animation-delay-400 mt-4 text-base font-semibold md:text-lg"
+                      style={{ color: theme.textColor }}
+                    >
+                      + ${event.addOn.price} {event.addOn.description}
+                    </p>
+                  )}
+                </div>
               </div>
-              {/* Decorative icons around image */}
-              <FloatingIcon
-                icon={HeroIcon}
-                className="absolute -top-4 -left-6 z-10 drop-shadow-lg"
-                size="xl"
-                style={{ color: event.theme?.primary }}
-              />
-              <FloatingIcon
-                icon={HeroIcon}
-                className="absolute -right-4 -bottom-3 z-10 drop-shadow-lg"
-                size="lg"
-                style={{ color: `${event.theme?.primary}CC` }}
-              />
+
+              {/* Hero visual: flyer (polaroid style) or photo */}
+              {event.flyer ? (
+                <div className="relative mx-auto w-full max-w-sm lg:max-w-md">
+                  <div className="rotate-2 rounded-2xl bg-white p-3 shadow-[0_20px_50px_rgba(0,0,0,0.25)] transition-transform hover:rotate-0">
+                    <Image
+                      src={event.flyer.src}
+                      alt={event.flyer.alt}
+                      width={event.flyer.width}
+                      height={event.flyer.height}
+                      className="h-auto w-full rounded-lg"
+                      priority
+                      sizes="(max-width: 1024px) 90vw, 420px"
+                    />
+                  </div>
+                  <a
+                    href={event.flyer.src}
+                    download
+                    className={`mt-5 inline-flex items-center gap-2 rounded-full bg-white/90 px-5 py-2 text-sm font-semibold shadow hover:bg-white ${fredoka.className}`}
+                    style={{ color: theme.headingColor }}
+                  >
+                    <Download className="h-4 w-4" />
+                    Download the flyer
+                  </a>
+                  <FloatingIcon
+                    icon={HeroIcon}
+                    className="absolute -top-6 -left-6 z-10 drop-shadow-lg"
+                    size="xl"
+                    style={{ color: event.theme?.primary }}
+                  />
+                </div>
+              ) : (
+                <div className="relative mx-auto mt-12 max-w-2xl">
+                  <div className="relative aspect-[16/10] w-full overflow-hidden rounded-3xl border-4 border-white shadow-2xl">
+                    <Image
+                      src={images.birthday.DSC00995}
+                      alt="Kids having fun at New Ground"
+                      fill
+                      className="object-cover"
+                      priority
+                    />
+                    <div
+                      className="absolute inset-0"
+                      style={{
+                        background: `linear-gradient(to top, ${theme.headingColor}33, transparent)`,
+                      }}
+                    />
+                  </div>
+                  {/* Decorative icons around image */}
+                  <FloatingIcon
+                    icon={HeroIcon}
+                    className="absolute -top-4 -left-6 z-10 drop-shadow-lg"
+                    size="xl"
+                    style={{ color: event.theme?.primary }}
+                  />
+                  <FloatingIcon
+                    icon={HeroIcon}
+                    className="absolute -right-4 -bottom-3 z-10 drop-shadow-lg"
+                    size="lg"
+                    style={{ color: `${event.theme?.primary}CC` }}
+                  />
+                </div>
+              )}
             </div>
           </Container>
 
@@ -502,6 +658,44 @@ export function EventPage({ event }: { event: RecurringEvent }) {
                     </div>
                   </CardContent>
                 </Card>
+
+                {(event.requirements?.length || event.audience) && (
+                  <Card
+                    className="mt-6 border-0 text-white shadow-lg"
+                    style={{ backgroundColor: theme.darkCardColor || theme.gradientDark }}
+                  >
+                    <CardContent className="p-6">
+                      <p
+                        className={`mb-3 text-xs font-bold tracking-wider uppercase ${
+                          theme.playful ? fredoka.className : ""
+                        }`}
+                        style={{ color: theme.rainbow?.[1] || event.theme?.secondary }}
+                      >
+                        Good to know
+                      </p>
+                      <ul className="space-y-2.5">
+                        {event.audience && (
+                          <li className="flex items-start gap-3 font-semibold">
+                            <ShieldCheck
+                              className="mt-0.5 h-5 w-5 shrink-0"
+                              style={{ color: theme.accentCardColor || theme.rainbow?.[3] }}
+                            />
+                            <span>{event.audience.charAt(0).toUpperCase() + event.audience.slice(1)}</span>
+                          </li>
+                        )}
+                        {event.requirements?.map((item) => (
+                          <li key={item} className="flex items-start gap-3">
+                            <CheckCircle2
+                              className="mt-0.5 h-5 w-5 shrink-0"
+                              style={{ color: theme.rainbow?.[2] || event.theme?.secondary }}
+                            />
+                            <span>{item}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </CardContent>
+                  </Card>
+                )}
               </div>
 
               {/* Right: Booking Card */}
@@ -537,7 +731,9 @@ export function EventPage({ event }: { event: RecurringEvent }) {
                     <p className="mb-2 text-sm font-bold tracking-widest text-white/80 uppercase">
                       Reserve Your Spot
                     </p>
-                    <p className="font-heading text-6xl">${event.pricing.perChild}</p>
+                    <p className={theme.playful ? `${fredoka.className} text-6xl font-bold` : "font-heading text-6xl"}>
+                      ${event.pricing.perChild}
+                    </p>
                     <p className="mt-1 text-sm font-medium tracking-wide text-white/90 uppercase">
                       {event.pricing.description}
                     </p>
@@ -641,7 +837,7 @@ export function EventPage({ event }: { event: RecurringEvent }) {
         {/* Private Events Banner */}
         <Section
           className="relative overflow-hidden text-white"
-          style={{ backgroundColor: event.theme?.primary }}
+          style={{ backgroundColor: event.theme?.primary, backgroundImage: theme.bannerBackground }}
         >
           <div className="pointer-events-none absolute inset-0 opacity-10">
             <HeroIcon className="absolute top-[20%] left-[10%] h-20 w-20 fill-current" />
