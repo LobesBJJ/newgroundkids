@@ -25,6 +25,8 @@ import {
   Medal,
   Zap,
   Star,
+  Utensils,
+  Timer,
 } from "lucide-react";
 
 export interface EventActivity {
@@ -67,6 +69,17 @@ export interface RecurringEvent {
     calEventSlug: string;
     note?: string; // shown under the add-on button
   };
+  // Optional flyer image (served from /public) — shown in the hero and downloadable
+  flyer?: {
+    src: string;
+    width: number;
+    height: number;
+    alt: string;
+  };
+  // Who the event is for (shown as a badge), e.g. "New Ground students only"
+  audience?: string;
+  // Things parents/kids need to know or bring
+  requirements?: string[];
   // For display
   tagline?: string;
   theme?: {
@@ -80,11 +93,11 @@ export interface RecurringEvent {
 export const upcomingEvents: RecurringEvent[] = [
   {
     id: "all-sports-showdown-2026",
-    name: "All Sports Showdown",
+    name: "Kids All-Sports Showdown",
     emoji: "🏆",
     subtitle: "4 Hours of Game-Day Fun",
     description:
-      "Drop off your kids for the ultimate All Sports Showdown! They'll rotate through a lineup of their favorite sports and team games, compete in friendly challenges, refuel with pizza, and wind down with a movie to finish the night — while you enjoy a well-earned night out.",
+      "Drop off your kids for the ultimate All-Sports Showdown! Two hours of competitive games across their favorite sports, a post-workout meal to refuel, and a movie to wind down the night — while you enjoy a well-earned night out.",
     date: "September 19th",
     dayOfWeek: "Saturday",
     dropOff: "4:00 PM",
@@ -104,10 +117,22 @@ export const upcomingEvents: RecurringEvent[] = [
       note: "Register your first child first, then book one add-on per additional sibling.",
     },
     activities: [
-      { icon: "Trophy", label: "Multi-Sport Games" },
+      { icon: "Timer", label: "2 Hours of Competitive Games" },
       { icon: "Medal", label: "Team Challenges & Prizes" },
-      { icon: "Pizza", label: "Pizza & Snacks" },
+      { icon: "Utensils", label: "Post-Workout Meal" },
       { icon: "Film", label: "Movie to Finish the Night" },
+    ],
+    flyer: {
+      src: "/images/events/all-sports-showdown-flyer.jpg",
+      width: 1600,
+      height: 2071,
+      alt: "Kids All-Sports Showdown flyer — Sept 19, 4–8 PM at New Ground Jiu Jitsu",
+    },
+    audience: "New Ground students only",
+    requirements: [
+      "Wear your uniform or active wear",
+      "Bring a change of clothes for after",
+      "Bring water",
     ],
     calEventSlug: "all-sports-showdown",
     featured: true,
@@ -158,4 +183,6 @@ export const activityIcons: Record<string, LucideIcon> = {
   Medal,
   Zap,
   Star,
+  Utensils,
+  Timer,
 };
