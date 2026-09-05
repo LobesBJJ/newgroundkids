@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Image from "next/image";
 import { Trophy, ArrowRight } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
@@ -57,15 +58,28 @@ export default function EventsPage() {
                       }}
                     >
                       <CardContent className="flex flex-1 flex-col items-center p-6 text-center">
-                        <div
-                          className="mb-4 flex h-16 w-16 items-center justify-center rounded-full"
-                          style={{ backgroundColor: meta.colors.badge }}
-                        >
-                          <Icon
-                            className="h-8 w-8 fill-current"
-                            style={{ color: meta.colors.border }}
-                          />
-                        </div>
+                        {event.flyer ? (
+                          <div className="mb-5 w-full -rotate-1 rounded-xl bg-white p-2 shadow-md transition-transform group-hover:rotate-0">
+                            <Image
+                              src={event.flyer.src}
+                              alt={event.flyer.alt}
+                              width={event.flyer.width}
+                              height={event.flyer.height}
+                              className="h-auto w-full rounded-md"
+                              sizes="(max-width: 640px) 90vw, 360px"
+                            />
+                          </div>
+                        ) : (
+                          <div
+                            className="mb-4 flex h-16 w-16 items-center justify-center rounded-full"
+                            style={{ backgroundColor: meta.colors.badge }}
+                          >
+                            <Icon
+                              className="h-8 w-8 fill-current"
+                              style={{ color: meta.colors.border }}
+                            />
+                          </div>
+                        )}
 
                         <Badge
                           className="mb-3 border text-xs"
