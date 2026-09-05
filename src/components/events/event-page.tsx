@@ -1,6 +1,21 @@
 import Image from "next/image";
 import Link from "next/link";
-import { CalendarDays, Clock, MapPin, Info, Heart, Flower2, TreePine, Sun, Waves, IceCream } from "lucide-react";
+import {
+  CalendarDays,
+  Clock,
+  MapPin,
+  Info,
+  Heart,
+  Flower2,
+  TreePine,
+  Sun,
+  Waves,
+  IceCream,
+  Trophy,
+  Medal,
+  Zap,
+  Star,
+} from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -58,6 +73,25 @@ interface EventThemeConfig {
 }
 
 export function getThemeConfig(eventId: string): EventThemeConfig {
+  if (eventId.startsWith("all-sports")) {
+    return {
+      heroIcon: Trophy,
+      decorationIcons: [Trophy, Medal, Zap, Star],
+      heroBgColor: "#EFF6FF",
+      burstColors: ["#2563EB", "#93C5FD"],
+      gradientDark: "#1E3A8A",
+      patternSvg: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60' viewBox='0 0 24 24' fill='%232563EB'%3E%3Ccircle cx='12' cy='12' r='9' fill='none' stroke='%232563EB' stroke-width='2'/%3E%3Ccircle cx='12' cy='12' r='3'/%3E%3C/svg%3E")`,
+      headingColor: "#1E3A8A",
+      textColor: "#1D4ED8",
+      ctaBorderColor: "#2563EB",
+      ctaBgColor: "#2563EB",
+      ctaHoverBgColor: "#1D4ED8",
+      ctaShadowColor: "rgba(37,99,235,0.4)",
+      ctaHoverShadowColor: "rgba(37,99,235,0.5)",
+      footerTextColor: "#1D4ED8",
+    };
+  }
+
   if (eventId.startsWith("spring")) {
     return {
       heroIcon: Flower2,
@@ -117,6 +151,18 @@ export function getThemeConfig(eventId: string): EventThemeConfig {
 
 // Color classes for floating decorations per theme
 function getDecorationColors(eventId: string): string[] {
+  if (eventId.startsWith("all-sports")) {
+    return [
+      "text-blue-400 opacity-60",
+      "text-sky-500 opacity-50",
+      "text-blue-300 opacity-40",
+      "text-sky-600 opacity-50",
+      "text-blue-400 opacity-30",
+      "text-sky-500 opacity-40",
+      "text-blue-400 opacity-50",
+      "text-sky-500 opacity-60",
+    ];
+  }
   if (eventId.startsWith("spring")) {
     return [
       "text-green-400 opacity-60",
