@@ -59,6 +59,14 @@ export interface RecurringEvent {
   activities: EventActivity[];
   calEventSlug: string;
   featured: boolean;
+  // Optional add-on booking (e.g. sibling discount) sold as a separate Cal.com event
+  addOn?: {
+    label: string; // e.g. "Sibling Add-On"
+    price: number;
+    description: string; // e.g. "each additional child from the same family"
+    calEventSlug: string;
+    note?: string; // shown under the add-on button
+  };
   // For display
   tagline?: string;
   theme?: {
@@ -86,7 +94,14 @@ export const upcomingEvents: RecurringEvent[] = [
     addressLine2: "Sherman Oaks, CA 91403",
     pricing: {
       perChild: 50,
-      description: "per child",
+      description: "first child",
+    },
+    addOn: {
+      label: "Sibling Add-On",
+      price: 10,
+      description: "each additional child from the same family",
+      calEventSlug: "all-sports-showdown-sibling",
+      note: "Register your first child first, then book one add-on per additional sibling.",
     },
     activities: [
       { icon: "Trophy", label: "Multi-Sport Games" },
