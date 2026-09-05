@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Heart, Flower, Flower2, Sun, Award, ArrowRight } from "lucide-react";
+import { Trophy, ArrowRight } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -14,34 +14,14 @@ import { upcomingEvents } from "@/data/events";
 export const metadata: Metadata = {
   title: "Events",
   description:
-    "Upcoming events at NewGround Kids — Valentine's Day, Spring Fling, Summer Splash parents night out parties and more!",
+    "Upcoming events at NewGround Kids — the All Sports Showdown parents night out and more!",
 };
 
-const eventMeta: Record<string, { icon: typeof Heart; href: string; colors: { bg: string; border: string; text: string; badge: string } }> = {
-  "valentines-2026": {
-    icon: Heart,
-    href: "/events/valentines",
-    colors: { bg: "#FDF2F4", border: "#E11D48", text: "#881337", badge: "#FFE4E6" },
-  },
-  "mothers-day-2026": {
-    icon: Flower,
-    href: "/events/mothers-day",
-    colors: { bg: "#FAF5FF", border: "#9333EA", text: "#581C87", badge: "#F3E8FF" },
-  },
-  "fathers-day-2026": {
-    icon: Award,
-    href: "/events/fathers-day",
-    colors: { bg: "#FEF2F2", border: "#DC2626", text: "#7F1D1D", badge: "#FEE2E2" },
-  },
-  "spring-2026": {
-    icon: Flower2,
-    href: "/events/spring",
-    colors: { bg: "#F0FDF4", border: "#16A34A", text: "#14532D", badge: "#DCFCE7" },
-  },
-  "summer-2026": {
-    icon: Sun,
-    href: "/events/summer",
-    colors: { bg: "#FFF7ED", border: "#EA580C", text: "#7C2D12", badge: "#FFF7ED" },
+const eventMeta: Record<string, { icon: typeof Trophy; href: string; colors: { bg: string; border: string; text: string; badge: string } }> = {
+  "all-sports-showdown-2026": {
+    icon: Trophy,
+    href: "/events/all-sports-showdown",
+    colors: { bg: "#EFF6FF", border: "#2563EB", text: "#1E3A8A", badge: "#DBEAFE" },
   },
 };
 
@@ -57,18 +37,18 @@ export default function EventsPage() {
               <h1 className="font-heading mb-4 text-5xl md:text-6xl">Upcoming Events</h1>
               <p className="text-muted-foreground mx-auto max-w-2xl text-lg">
                 Fun-filled parents night out events throughout the year. Drop off your kids for
-                games, bounce house, pizza, and a movie!
+                games, sports, pizza, and a whole lot of fun!
               </p>
             </div>
 
-            <div className="mx-auto grid max-w-5xl gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            <div className="mx-auto flex max-w-5xl flex-wrap justify-center gap-6">
               {upcomingEvents.map((event) => {
                 const meta = eventMeta[event.id];
                 if (!meta) return null;
                 const Icon = meta.icon;
 
                 return (
-                  <Link key={event.id} href={meta.href} className="group">
+                  <Link key={event.id} href={meta.href} className="group w-full max-w-sm">
                     <Card
                       className="flex h-full flex-col border-2 transition-all group-hover:-translate-y-1 group-hover:shadow-lg"
                       style={{
