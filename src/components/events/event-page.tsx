@@ -834,6 +834,108 @@ export function EventPage({ event }: { event: RecurringEvent }) {
           </Container>
         </Section>
 
+        {/* How to book multiple kids */}
+        {event.addOn?.steps && (
+          <Section className="bg-white pt-0">
+            <Container>
+              <div
+                className="rounded-3xl border-2 p-6 md:p-10"
+                style={{
+                  borderColor: event.theme?.primary,
+                  backgroundColor: event.theme?.secondary,
+                }}
+              >
+                <div className="mb-8 text-center">
+                  <p
+                    className={`mb-2 text-xs font-bold tracking-wider uppercase ${
+                      theme.playful ? fredoka.className : ""
+                    }`}
+                    style={{ color: event.theme?.primary }}
+                  >
+                    Booking 2 or more kids?
+                  </p>
+                  <h2
+                    className={`text-3xl md:text-4xl ${
+                      theme.playful ? fredoka.className + " font-bold" : "font-heading"
+                    }`}
+                    style={{ color: theme.headingColor }}
+                  >
+                    Here&apos;s how it works
+                  </h2>
+                  <p className="text-muted-foreground mx-auto mt-2 max-w-2xl">
+                    Each child is booked separately so we get every kid&apos;s name and can count
+                    spots. It only takes a minute per child.
+                  </p>
+                </div>
+
+                <ol className="grid gap-5 md:grid-cols-3">
+                  {event.addOn.steps.map((step, i) => {
+                    const tileColor =
+                      theme.rainbow?.[[0, 3, 2][i] ?? i] || event.theme?.primary || "#2563EB";
+                    return (
+                      <li
+                        key={step.title}
+                        className="flex flex-col rounded-2xl bg-white p-6 shadow-md"
+                      >
+                        <div
+                          className={`mb-4 flex h-12 w-12 items-center justify-center rounded-full text-2xl font-bold text-white ${
+                            theme.playful ? fredoka.className : "font-heading"
+                          }`}
+                          style={{ backgroundColor: tileColor }}
+                        >
+                          {i + 1}
+                        </div>
+                        <h3
+                          className={`mb-2 text-xl ${
+                            theme.playful ? fredoka.className + " font-semibold" : "font-heading"
+                          }`}
+                        >
+                          {step.title}
+                        </h3>
+                        <p className="text-muted-foreground text-sm leading-relaxed">
+                          {step.detail}
+                        </p>
+                      </li>
+                    );
+                  })}
+                </ol>
+
+                {event.addOn.example && (
+                  <p
+                    className="mt-6 rounded-full bg-white/80 px-5 py-3 text-center text-sm font-semibold"
+                    style={{ color: theme.headingColor }}
+                  >
+                    {event.addOn.example}
+                  </p>
+                )}
+
+                <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
+                  <CalPopupButton
+                    eventType={event.calEventSlug}
+                    className={`inline-flex h-12 items-center justify-center gap-2 rounded-full px-8 text-base text-white shadow-lg transition-all hover:scale-[1.02] ${
+                      theme.playful ? fredoka.className + " font-bold" : "font-heading"
+                    }`}
+                    style={{ backgroundColor: theme.ctaBgColor }}
+                  >
+                    <HeroIcon className="h-4 w-4 fill-current" />
+                    Book First Child - ${event.pricing.perChild}
+                  </CalPopupButton>
+                  <CalPopupButton
+                    eventType={event.addOn.calEventSlug}
+                    className={`inline-flex h-12 items-center justify-center gap-2 rounded-full border-2 border-dashed bg-white px-8 text-base transition-all hover:scale-[1.02] ${
+                      theme.playful ? fredoka.className + " font-bold" : "font-heading"
+                    }`}
+                    style={{ borderColor: event.theme?.primary, color: event.theme?.primary }}
+                  >
+                    <Users className="h-4 w-4" />
+                    Add a Sibling - ${event.addOn.price}
+                  </CalPopupButton>
+                </div>
+              </div>
+            </Container>
+          </Section>
+        )}
+
         {/* Private Events Banner */}
         <Section
           className="relative overflow-hidden text-white"
