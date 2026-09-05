@@ -76,7 +76,7 @@ export const upcomingEvents: RecurringEvent[] = [
     emoji: "🏆",
     subtitle: "4 Hours of Game-Day Fun",
     description:
-      "Drop off your kids for the ultimate All Sports Showdown! They'll rotate through a lineup of their favorite sports and team games, compete in friendly challenges, and refuel with pizza — while you enjoy a well-earned night out.",
+      "Drop off your kids for the ultimate All Sports Showdown! They'll rotate through a lineup of their favorite sports and team games, compete in friendly challenges, refuel with pizza, and wind down with a movie to finish the night — while you enjoy a well-earned night out.",
     date: "September 19th",
     dayOfWeek: "Saturday",
     dropOff: "4:00 PM",
@@ -92,7 +92,7 @@ export const upcomingEvents: RecurringEvent[] = [
       { icon: "Trophy", label: "Multi-Sport Games" },
       { icon: "Medal", label: "Team Challenges & Prizes" },
       { icon: "Pizza", label: "Pizza & Snacks" },
-      { icon: "Zap", label: "Non-Stop Fun" },
+      { icon: "Film", label: "Movie to Finish the Night" },
     ],
     calEventSlug: "all-sports-showdown",
     featured: true,
