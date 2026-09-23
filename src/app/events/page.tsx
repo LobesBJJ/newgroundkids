@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
-import { Trophy, ArrowRight } from "lucide-react";
+import { Ghost, ArrowRight } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -15,14 +15,14 @@ import { upcomingEvents } from "@/data/events";
 export const metadata: Metadata = {
   title: "Events",
   description:
-    "Upcoming events at NewGround Kids — the All Sports Showdown parents night out and more!",
+    "Upcoming events at NewGround Kids — the Kids Halloween Bash parents night off and more!",
 };
 
-const eventMeta: Record<string, { icon: typeof Trophy; href: string; colors: { bg: string; border: string; text: string; badge: string } }> = {
-  "all-sports-showdown-2026": {
-    icon: Trophy,
-    href: "/events/all-sports-showdown",
-    colors: { bg: "#EFF6FF", border: "#2563EB", text: "#1E3A8A", badge: "#DBEAFE" },
+const eventMeta: Record<string, { icon: typeof Ghost; href: string; colors: { bg: string; border: string; text: string; badge: string } }> = {
+  "halloween-bash-2026": {
+    icon: Ghost,
+    href: "/events/halloween-bash",
+    colors: { bg: "#1B1A17", border: "#F26B1D", text: "#EFE3C3", badge: "#B5D334" },
   },
 };
 
@@ -59,7 +59,7 @@ export default function EventsPage() {
                     >
                       <CardContent className="flex flex-1 flex-col items-center p-6 text-center">
                         {event.flyer ? (
-                          <div className="mb-5 w-full -rotate-1 rounded-xl bg-white p-2 shadow-md transition-transform group-hover:rotate-0">
+                          <div className="mb-5 w-full -rotate-1 rounded-xl p-2 shadow-md transition-transform group-hover:rotate-0" style={{ backgroundColor: "#EFE3C3" }}>
                             <Image
                               src={event.flyer.src}
                               alt={event.flyer.alt}
@@ -84,8 +84,8 @@ export default function EventsPage() {
                         <Badge
                           className="mb-3 border text-xs"
                           style={{
-                            borderColor: meta.colors.border,
-                            color: meta.colors.border,
+                            borderColor: meta.colors.badge,
+                            color: "#1B1A17",
                             backgroundColor: meta.colors.badge,
                           }}
                         >
@@ -99,7 +99,9 @@ export default function EventsPage() {
                           {event.name}
                         </h2>
 
-                        <p className="text-muted-foreground mb-4 text-sm">{event.subtitle}</p>
+                        <p className="mb-4 text-sm" style={{ color: meta.colors.text, opacity: 0.75 }}>
+                          {event.subtitle}
+                        </p>
 
                         <div className="mt-auto">
                           <span
