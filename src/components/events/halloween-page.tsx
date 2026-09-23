@@ -150,6 +150,15 @@ export function HalloweenEventPage({ event }: { event: RecurringEvent }) {
                     <Ghost className="h-4 w-4" />
                     Parents&apos; night off
                   </span>
+                  {event.audience && (
+                    <span
+                      className={`${luckiest.className} inline-flex items-center gap-2 rounded-full border-2 px-4 py-1.5 text-sm tracking-wide uppercase`}
+                      style={{ borderColor: cream, color: cream, backgroundColor: "rgba(239,227,195,0.08)" }}
+                    >
+                      <Users className="h-4 w-4" />
+                      {event.audience}
+                    </span>
+                  )}
                 </div>
 
                 {/* Headline */}
@@ -185,7 +194,7 @@ export function HalloweenEventPage({ event }: { event: RecurringEvent }) {
                   className={`${luckiest.className} animate-slide-up animation-delay-200 mt-6 text-sm tracking-wider uppercase sm:text-base md:text-lg`}
                   style={{ color: pumpkin }}
                 >
-                  Costume Contest · Food · Drinks · Kid-Friendly Scary Movie
+                  Costume Contest · Mummy Wrap Relay · Pumpkin Decorating · Food · Drinks · Kid-Friendly Scary Movie
                 </p>
 
                 {/* Hero CTA */}
@@ -411,6 +420,12 @@ export function HalloweenEventPage({ event }: { event: RecurringEvent }) {
                       Good to know
                     </p>
                     <ul className="space-y-2.5">
+                      {event.audience && (
+                        <li className="flex items-start gap-3 font-semibold" style={{ color: cream }}>
+                          <Users className="mt-0.5 h-5 w-5 shrink-0" style={{ color: slime }} />
+                          <span>{event.audience} — activities work for little kids and big kids alike</span>
+                        </li>
+                      )}
                       {event.requirements.map((item) => (
                         <li key={item} className="flex items-start gap-3" style={{ color: cream }}>
                           <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0" style={{ color: slime }} />
