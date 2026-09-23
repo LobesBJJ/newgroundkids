@@ -30,6 +30,7 @@ import {
   Ghost,
   Skull,
   Candy,
+  Bandage,
 } from "lucide-react";
 
 export interface EventActivity {
@@ -118,7 +119,7 @@ export const upcomingEvents: RecurringEvent[] = [
     emoji: "\ud83c\udf83",
     subtitle: "4 Spooky Hours of Fun",
     description:
-      "Drop off your little monsters for a Halloween party they\u2019ll be talking about until next October: a costume contest, food and drinks, and a kid-friendly scary movie to finish the night \u2014 while you enjoy an evening off.",
+      "Drop off your little monsters for a Halloween party they\u2019ll be talking about until next October: a costume contest with small prizes for the top 3 costumes, a mummy wrap relay, mini pumpkin decorating, food and drinks, and a kid-friendly scary movie to finish the night \u2014 while you enjoy an evening off.",
     date: "October 24th",
     dayOfWeek: "Saturday",
     dropOff: "3:00 PM",
@@ -149,7 +150,9 @@ export const upcomingEvents: RecurringEvent[] = [
       },
     ],
     activities: [
-      { icon: "Ghost", label: "Costume Contest" },
+      { icon: "Ghost", label: "Costume Contest \u2014 Prizes for Top 3" },
+      { icon: "Bandage", label: "Mummy Wrap Relay" },
+      { icon: "Palette", label: "Mini Pumpkin Decorating" },
       { icon: "Pizza", label: "Food" },
       { icon: "Candy", label: "Drinks" },
       { icon: "Film", label: "Kid-Friendly Scary Movie" },
@@ -160,8 +163,9 @@ export const upcomingEvents: RecurringEvent[] = [
       height: 2270,
       alt: "Kids Halloween Bash flyer \u2014 Oct 24, 3 PM drop-off, 7 PM pick-up at New Ground Jiu Jitsu",
     },
+    audience: "All ages welcome",
     requirements: [
-      "Come dressed in your costume \u2014 there\u2019s a contest!",
+      "Come dressed in your costume \u2014 small prizes for the top 3!",
       "Food and drinks are included",
       "The movie is kid-friendly \u2014 spooky, not scary",
     ],
@@ -221,4 +225,5 @@ export const activityIcons: Record<string, LucideIcon> = {
   Ghost,
   Skull,
   Candy,
+  Bandage,
 };
