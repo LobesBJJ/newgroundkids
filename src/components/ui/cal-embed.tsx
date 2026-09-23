@@ -148,6 +148,8 @@ interface CalPopupButtonProps {
     email?: string;
     notes?: string;
   };
+  /** Extra Cal.com embed config, e.g. { month: "2026-10", date: "2026-10-24" } to open on a specific day */
+  config?: Record<string, string>;
 }
 
 export function CalPopupButton({
@@ -156,6 +158,7 @@ export function CalPopupButton({
   className,
   style,
   prefill,
+  config,
 }: CalPopupButtonProps) {
   const calLink = eventType ? `${CALCOM_USERNAME}/${eventType}` : CALCOM_USERNAME;
 
@@ -182,6 +185,7 @@ export function CalPopupButton({
       data-cal-config={JSON.stringify({
         layout: "month_view",
         theme: "light",
+        ...config,
         ...(prefill && {
           name: prefill.name,
           email: prefill.email,
