@@ -27,6 +27,9 @@ import {
   Star,
   Utensils,
   Timer,
+  Ghost,
+  Skull,
+  Candy,
 } from "lucide-react";
 
 export interface EventActivity {
@@ -39,6 +42,15 @@ export interface EventTimeSlot {
   ageRange: string;
   time: string;
   calEventSlug: string;
+}
+
+export interface EventTier {
+  label: string; // e.g. "1 Child"
+  kids: number;
+  price: number;
+  calEventSlug: string;
+  note?: string; // e.g. "Siblings only"
+  popular?: boolean;
 }
 
 export interface RecurringEvent {
@@ -61,6 +73,12 @@ export interface RecurringEvent {
   activities: EventActivity[];
   calEventSlug: string;
   featured: boolean;
+  // Cal.com month/date to open the booking popup on (e.g. "2026-10" / "2026-10-24")
+  calMonth?: string;
+  calDate?: string;
+  // Flat pricing tiers, each sold as its own single-checkout Cal.com event
+  // (e.g. 1 child $50, 2 siblings $60, 3 siblings $70)
+  tiers?: EventTier[];
   // Optional add-on booking (e.g. sibling discount) sold as a separate Cal.com event
   addOn?: {
     label: string; // e.g. "Sibling Add-On"
@@ -95,73 +113,67 @@ export interface RecurringEvent {
 
 export const upcomingEvents: RecurringEvent[] = [
   {
-    id: "all-sports-showdown-2026",
-    name: "Kids All-Sports Showdown",
-    emoji: "🏆",
-    subtitle: "4 Hours of Game-Day Fun",
+    id: "halloween-bash-2026",
+    name: "Kids Halloween Bash",
+    emoji: "\ud83c\udf83",
+    subtitle: "4 Spooky Hours of Fun",
     description:
-      "Drop off your kids for the ultimate All-Sports Showdown! Two hours of competitive games across their favorite sports, a post-workout meal to refuel, and a movie to wind down the night — while you enjoy a well-earned night out.",
-    date: "September 19th",
+      "Drop off your little monsters for a Halloween party they\u2019ll be talking about until next October: a costume contest, food and drinks, and a kid-friendly scary movie to finish the night \u2014 while you enjoy an evening off.",
+    date: "October 24th",
     dayOfWeek: "Saturday",
-    dropOff: "4:00 PM",
-    pickUp: "8:00 PM",
+    dropOff: "3:00 PM",
+    pickUp: "7:00 PM",
     location: "New Ground Jiu Jitsu",
     addressLine1: "4617 Van Nuys Blvd, Unit B",
     addressLine2: "Sherman Oaks, CA 91403",
     pricing: {
       perChild: 50,
-      description: "first child",
+      description: "one child",
     },
-    addOn: {
-      label: "Sibling Add-On",
-      price: 10,
-      description: "each additional child from the same family",
-      calEventSlug: "all-sports-showdown-sibling",
-      note: "Book your first child first, then add one sibling booking per additional child. Full steps below.",
-      steps: [
-        {
-          title: "Book your first child",
-          detail:
-            "Tap \u201cBook First Child \u2013 $50\u201d, choose the 4:00 PM slot, enter your name and email, and pay. You\u2019ll get a confirmation email right away.",
-        },
-        {
-          title: "Add each sibling",
-          detail:
-            "Come back to this page and tap \u201cAdd a Sibling \u2013 $10\u201d. Choose the same 4:00 PM slot, enter the sibling\u2019s name plus the name of the child you already registered, and pay. Do this once for every additional sibling.",
-        },
-        {
-          title: "Check your inbox",
-          detail:
-            "Each child gets their own confirmation email \u2014 that\u2019s their spot. Nothing to print; just bring the kids on the 19th!",
-        },
-      ],
-      example: "Example: 3 kids = one $50 booking + two $10 sibling bookings = $70 total.",
-    },
+    tiers: [
+      { label: "1 Child", kids: 1, price: 50, calEventSlug: "halloween-bash-1-child" },
+      {
+        label: "2 Kids",
+        kids: 2,
+        price: 60,
+        calEventSlug: "halloween-bash-2-kids",
+        note: "Siblings \u00b7 save $40",
+        popular: true,
+      },
+      {
+        label: "3 Kids",
+        kids: 3,
+        price: 70,
+        calEventSlug: "halloween-bash-3-kids",
+        note: "Siblings \u00b7 save $80",
+      },
+    ],
     activities: [
-      { icon: "Timer", label: "2 Hours of Competitive Games" },
-      { icon: "Medal", label: "Team Challenges & Prizes" },
-      { icon: "Utensils", label: "Post-Workout Meal" },
-      { icon: "Film", label: "Movie to Finish the Night" },
+      { icon: "Ghost", label: "Costume Contest" },
+      { icon: "Pizza", label: "Food" },
+      { icon: "Candy", label: "Drinks" },
+      { icon: "Film", label: "Kid-Friendly Scary Movie" },
     ],
     flyer: {
-      src: "/images/events/all-sports-showdown-flyer.jpg",
+      src: "/images/events/halloween-bash-flyer.jpg",
       width: 1600,
-      height: 2071,
-      alt: "Kids All-Sports Showdown flyer — Sept 19, 4–8 PM at New Ground Jiu Jitsu",
+      height: 2270,
+      alt: "Kids Halloween Bash flyer \u2014 Oct 24, 3 PM drop-off, 7 PM pick-up at New Ground Jiu Jitsu",
     },
-    audience: "New Ground students only",
     requirements: [
-      "Wear your uniform or active wear",
-      "Bring a change of clothes for after",
-      "Bring water",
+      "Come dressed in your costume \u2014 there\u2019s a contest!",
+      "Food and drinks are included",
+      "The movie is kid-friendly \u2014 spooky, not scary",
     ],
-    calEventSlug: "all-sports-showdown",
+    calEventSlug: "halloween-bash-1-child",
+    calMonth: "2026-10",
+    calDate: "2026-10-24",
     featured: true,
-    tagline: "You enjoy the night off. We'll bring the game.",
+    tagline: "You enjoy the night off. We\u2019ll handle the scares.",
     theme: {
-      primary: "#2563EB", // Blue-600
-      secondary: "#DBEAFE", // Blue-100
-      burstColor: "#2563EB",
+      primary: "#F26B1D", // pumpkin orange
+      secondary: "#1B1A17", // near-black
+      burstColor: "#B5D334", // slime green
     },
   },
 ];
@@ -169,7 +181,7 @@ export const upcomingEvents: RecurringEvent[] = [
 // Helper to get event by slug
 export const getEventBySlug = (slug: string) => {
   const slugMap: Record<string, string> = {
-    "all-sports-showdown": "all-sports-showdown-2026",
+    "halloween-bash": "halloween-bash-2026",
   };
   return upcomingEvents.find((e) => e.id === slugMap[slug]);
 };
@@ -206,4 +218,7 @@ export const activityIcons: Record<string, LucideIcon> = {
   Star,
   Utensils,
   Timer,
+  Ghost,
+  Skull,
+  Candy,
 };
