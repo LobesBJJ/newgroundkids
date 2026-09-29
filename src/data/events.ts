@@ -50,6 +50,9 @@ export interface EventTier {
   kids: number;
   price: number;
   calEventSlug: string;
+  // Optional direct checkout (e.g. a Stripe Payment Link). When set, the tier's
+  // button links here instead of opening the Cal.com popup.
+  checkoutUrl?: string;
   note?: string; // e.g. "Siblings only"
   popular?: boolean;
 }
@@ -138,6 +141,7 @@ export const upcomingEvents: RecurringEvent[] = [
         kids: 2,
         price: 60,
         calEventSlug: "halloween-bash-2-kids",
+        checkoutUrl: "https://buy.stripe.com/14A00l1Q942JbQ0fBiak00a",
         note: "Siblings \u00b7 save $40",
         popular: true,
       },
@@ -146,6 +150,7 @@ export const upcomingEvents: RecurringEvent[] = [
         kids: 3,
         price: 70,
         calEventSlug: "halloween-bash-3-kids",
+        checkoutUrl: "https://buy.stripe.com/5kQ8wR3YhdDj2fqfBiak00b",
         note: "Siblings \u00b7 save $80",
       },
     ],
