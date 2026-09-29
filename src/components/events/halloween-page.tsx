@@ -323,19 +323,34 @@ export function HalloweenEventPage({ event }: { event: RecurringEvent }) {
                     </p>
 
                     <div className="mt-6">
-                      <CalPopupButton
-                        eventType={tier.calEventSlug}
-                        config={calConfig}
-                        className={`${luckiest.className} flex h-14 w-full items-center justify-center gap-2 rounded-full text-lg tracking-wide uppercase transition-transform hover:scale-[1.03]`}
-                        style={{
+                      {(() => {
+                        const buttonClass = `${luckiest.className} flex h-14 w-full items-center justify-center gap-2 rounded-full text-lg tracking-wide uppercase transition-transform hover:scale-[1.03]`;
+                        const buttonStyle = {
                           backgroundColor: accent,
                           color: ink,
                           boxShadow: `0 8px 24px ${tier.popular ? "rgba(181,211,52,0.35)" : "rgba(242,107,29,0.35)"}`,
-                        }}
-                      >
-                        <Ticket className="h-5 w-5" />
-                        Book {tier.kids === 1 ? "1 Child" : `${tier.kids} Kids`} · ${tier.price}
-                      </CalPopupButton>
+                        };
+                        const buttonLabel = (
+                          <>
+                            <Ticket className="h-5 w-5" />
+                            Book {tier.kids === 1 ? "1 Child" : `${tier.kids} Kids`} · ${tier.price}
+                          </>
+                        );
+                        return tier.checkoutUrl ? (
+                          <a href={tier.checkoutUrl} className={buttonClass} style={buttonStyle}>
+                            {buttonLabel}
+                          </a>
+                        ) : (
+                          <CalPopupButton
+                            eventType={tier.calEventSlug}
+                            config={calConfig}
+                            className={buttonClass}
+                            style={buttonStyle}
+                          >
+                            {buttonLabel}
+                          </CalPopupButton>
+                        );
+                      })()}
                     </div>
                   </div>
                 );
