@@ -26,13 +26,9 @@ import { ComicBurst } from "@/components/ui/comic-burst";
 import { SpeechBubble, ComicPanel } from "@/components/ui/speech-bubble";
 import { PackageCard, ExtrasCard } from "@/components/cards/package-card";
 import { FAQSection } from "@/components/sections/faq-section";
+import { PartyMoments } from "@/components/sections/party-moments";
 
-import {
-  birthdayPackages,
-  birthdayExtras,
-  birthdayGalleryImages,
-  birthdayStats,
-} from "@/data/birthday-packages";
+import { birthdayPackages, birthdayExtras, birthdayStats } from "@/data/birthday-packages";
 import { siteConfig } from "@/config/site";
 import { images } from "@/lib/images";
 
@@ -355,26 +351,12 @@ export default function BirthdayPartiesPage() {
               </Badge>
               <h2 className="mb-4 text-white">Party Moments</h2>
               <p className="mx-auto max-w-2xl text-lg text-white/80">
-                See the fun in action! Every party is filled with smiles, excitement, and
-                unforgettable memories.
+                Indoor bounce house, outdoor bounce house, or a full Nerf battle &mdash; see what
+                each party looks like in action.
               </p>
             </div>
 
-            {/* Comic Grid */}
-            <div className="border-4 border-black bg-white p-4 shadow-[8px_8px_0px_0px_#14b8a6]">
-              <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
-                {birthdayGalleryImages.slice(0, 9).map((image, index) => (
-                  <div
-                    key={image.id}
-                    className={`relative overflow-hidden border-4 border-black bg-white transition-all duration-300 hover:-translate-y-1 hover:shadow-[4px_4px_0px_0px_#000] ${index === 0 ? "md:col-span-2 md:row-span-2" : ""} `}
-                  >
-                    <div className={`relative ${index === 0 ? "aspect-square" : "aspect-[4/3]"}`}>
-                      <Image src={image.src} alt={image.alt} fill className="object-cover" />
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
+            <PartyMoments />
           </Container>
         </Section>
 

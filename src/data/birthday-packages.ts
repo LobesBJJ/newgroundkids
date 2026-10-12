@@ -134,29 +134,116 @@ export const birthdayExtras: BirthdayExtra[] = [
   },
 ];
 
-// Gallery images for the birthday party page
-export interface BirthdayImage {
+// "Party Moments" gallery on the birthday party page.
+// Photos render first, then videos. Each item is tagged with the party
+// experience it shows so parents can filter by what they want to book.
+export type PartyMomentCategory = "indoor-bounce" | "outdoor-bounce" | "nerf" | "extras";
+
+export const partyMomentCategories: {
+  id: PartyMomentCategory;
+  label: string;
+  /** Compact label for small tiles on phones */
+  short: string;
+}[] = [
+  { id: "indoor-bounce", label: "Indoor Bounce House", short: "Indoor Bounce" },
+  { id: "outdoor-bounce", label: "Outdoor Bounce House", short: "Outdoor Bounce" },
+  { id: "nerf", label: "Nerf Battle", short: "Nerf Battle" },
+  { id: "extras", label: "Photo Booth & Face Paint", short: "Booth & Paint" },
+];
+
+export interface PartyMoment {
   id: string;
+  type: "image" | "video";
+  category: PartyMomentCategory;
   src: string;
   alt: string;
-  featured?: boolean;
+  caption?: string;
+  /** Video only: still frame shown before playback */
+  poster?: string;
+  /** Video only: drives tile shape */
+  orientation?: "landscape" | "portrait";
 }
 
-export const birthdayGalleryImages: BirthdayImage[] = [
+const PM_IMG = "/images/party-moments";
+const PM_VID = "/videos/party-moments";
+
+export const partyMoments: PartyMoment[] = [
+  // Photos
   {
-    id: "1",
-    src: images.birthday.DSC00727,
-    alt: "Kids training at birthday party",
-    featured: true,
+    id: "indoor-bounce-party",
+    type: "image",
+    category: "indoor-bounce",
+    src: `${PM_IMG}/indoor-bounce-party.jpg`,
+    alt: "Kids racing down the double slide of the indoor bounce house during a birthday party",
+    caption: "Slide races on the mats",
   },
-  { id: "2", src: images.birthday.DSC00728, alt: "Birthday party activity" },
-  { id: "3", src: images.birthday.DSC00995, alt: "Instructor with kids" },
-  { id: "4", src: images.birthday.DSC00808, alt: "Kids sparring" },
-  { id: "5", src: images.birthday.DSC00821, alt: "Training session" },
-  { id: "6", src: images.birthday.DSC06085, alt: "Birthday party fun" },
-  { id: "7", src: images.birthday.DSC06065, alt: "Photo booth setup" },
-  { id: "8", src: images.birthday.DSC06037, alt: "Party activities" },
-  { id: "9", src: images.birthday.DSC06039, alt: "Kids having fun" },
+  {
+    id: "indoor-bounce-setup",
+    type: "image",
+    category: "indoor-bounce",
+    src: `${PM_IMG}/indoor-bounce-setup.jpg`,
+    alt: "Indoor bounce house with obstacle course and double slide set up on the academy mats",
+    caption: "Set up and ready before guests arrive",
+  },
+  {
+    id: "photo-booth-guest",
+    type: "image",
+    category: "extras",
+    src: images.birthday.DSC06085,
+    alt: "Party guest posing at the photo booth",
+  },
+  {
+    id: "photo-booth-setup",
+    type: "image",
+    category: "extras",
+    src: images.birthday.DSC06065,
+    alt: "Photo booth set up in front of a sequin backdrop",
+  },
+  {
+    id: "face-paint-logo",
+    type: "image",
+    category: "extras",
+    src: images.birthday.DSC06037,
+    alt: "Guest getting a NewGround logo painted on her cheek",
+  },
+  {
+    id: "face-paint-full",
+    type: "image",
+    category: "extras",
+    src: images.birthday.DSC06039,
+    alt: "Smiling guest with full face paint",
+  },
+  // Videos
+  {
+    id: "outdoor-bounce-party",
+    type: "video",
+    category: "outdoor-bounce",
+    orientation: "landscape",
+    src: `${PM_VID}/outdoor-bounce-party.mp4`,
+    poster: `${PM_IMG}/outdoor-bounce-party-poster.jpg`,
+    alt: "Video of kids jumping and sliding in the large outdoor bounce house at a party",
+    caption: "Party in full swing",
+  },
+  {
+    id: "outdoor-bounce-setup",
+    type: "video",
+    category: "outdoor-bounce",
+    orientation: "landscape",
+    src: `${PM_VID}/outdoor-bounce-setup.mp4`,
+    poster: `${PM_IMG}/outdoor-bounce-setup-poster.jpg`,
+    alt: "Walkaround video of the large tropical bounce house and slide combo",
+    caption: "Bounce + slide combo walkaround",
+  },
+  {
+    id: "nerf-battle",
+    type: "video",
+    category: "nerf",
+    orientation: "portrait",
+    src: `${PM_VID}/nerf-battle.mp4`,
+    poster: `${PM_IMG}/nerf-battle-poster.jpg`,
+    alt: "Video of kids in vests and masks playing a Nerf battle among foam bunkers",
+    caption: "Indoor Nerf arena",
+  },
 ];
 
 // Stats for the stats bar
