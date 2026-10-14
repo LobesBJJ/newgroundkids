@@ -185,12 +185,51 @@ export const upcomingEvents: RecurringEvent[] = [
       burstColor: "#B5D334", // slime green
     },
   },
+  {
+    id: "ice-cream-social-2027",
+    name: "Ice Cream Social",
+    subtitle: "Free for New Ground students + 1 friend",
+    description:
+      "Learn jiu jitsu, meet new friends, and share ice cream at the end. Free for New Ground students. The one rule: bring a friend who doesn’t train jiu jitsu.",
+    date: "January 23rd",
+    dayOfWeek: "Saturday",
+    dropOff: "2:00 PM",
+    pickUp: "4:00 PM",
+    location: "New Ground Jiu Jitsu",
+    addressLine1: "4617 Van Nuys Blvd, Unit B",
+    addressLine2: "Sherman Oaks, CA 91403",
+    pricing: {
+      perChild: 0,
+      description: "free for students and their friend",
+    },
+    activities: [
+      { icon: "Shield", label: "Learn Jiu Jitsu" },
+      { icon: "Users", label: "Meet New Friends" },
+      { icon: "IceCream", label: "Ice Cream to Finish" },
+    ],
+    flyer: {
+      src: "/images/events/ice-cream-social-flyer.jpg",
+      width: 1632,
+      height: 2112,
+      alt: "Ice Cream Social flyer — Saturday, January 23, 2–4 PM at New Ground Jiu Jitsu, Sherman Oaks. Free for students who bring a friend who doesn’t train jiu jitsu.",
+    },
+    audience: "Students + 1 friend",
+    calEventSlug: "",
+    featured: false,
+    tagline: "Learn jiu jitsu, meet new friends, share ice cream at the end.",
+    theme: {
+      primary: "#E63946",
+      secondary: "#1D3557",
+      burstColor: "#A8DADC",
+    },
+  },
 ];
 
 // Helper to get event by slug
 export const getEventBySlug = (slug: string) => {
   const slugMap: Record<string, string> = {
     "halloween-bash": "halloween-bash-2026",
+    "ice-cream-social": "ice-cream-social-2027",
   };
   return upcomingEvents.find((e) => e.id === slugMap[slug]);
 };

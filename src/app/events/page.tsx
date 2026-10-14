@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
-import { Ghost, ArrowRight } from "lucide-react";
+import { Ghost, IceCream, ArrowRight } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -23,6 +23,11 @@ const eventMeta: Record<string, { icon: typeof Ghost; href: string; colors: { bg
     icon: Ghost,
     href: "/events/halloween-bash",
     colors: { bg: "#1B1A17", border: "#F26B1D", text: "#EFE3C3", badge: "#B5D334" },
+  },
+  "ice-cream-social-2027": {
+    icon: IceCream,
+    href: "/events/ice-cream-social",
+    colors: { bg: "#1D3557", border: "#E63946", text: "#F1FAEE", badge: "#A8DADC" },
   },
 };
 
