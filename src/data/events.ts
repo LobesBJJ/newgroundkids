@@ -105,6 +105,8 @@ export interface RecurringEvent {
   audience?: string;
   // Things parents/kids need to know or bring
   requirements?: string[];
+  // Sign-up cap reached: the page switches to a waitlist
+  full?: boolean;
   // For display
   tagline?: string;
   theme?: {
@@ -214,6 +216,8 @@ export const upcomingEvents: RecurringEvent[] = [
       alt: "Ice Cream Social flyer — Saturday, January 23, 2–4 PM at New Ground Jiu Jitsu, Sherman Oaks. Free for students who bring a friend who doesn’t train jiu jitsu.",
     },
     audience: "Students + 1 friend",
+    // Flip to true when the ClickUp roster hits 25 (the workflow already waitlists automatically)
+    full: false,
     calEventSlug: "",
     featured: false,
     tagline: "Learn jiu jitsu, meet new friends, share ice cream at the end.",

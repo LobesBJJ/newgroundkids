@@ -98,12 +98,12 @@ function Group({ step, title, note, children }: { step: number; title: string; n
   );
 }
 
-export function IceCreamSignupForm() {
+export function IceCreamSignupForm({ full = false }: { full?: boolean }) {
   const [formKey, setFormKey] = useState(0);
-  return <SignupFormInner key={formKey} onReset={() => setFormKey((k) => k + 1)} />;
+  return <SignupFormInner key={formKey} full={full} onReset={() => setFormKey((k) => k + 1)} />;
 }
 
-function SignupFormInner({ onReset }: { onReset: () => void }) {
+function SignupFormInner({ full, onReset }: { full: boolean; onReset: () => void }) {
   const [state, action, pending] = useActionState(signUpForIceCreamSocial, null);
 
   if (state?.success && state.sentTo) {
@@ -115,7 +115,11 @@ function SignupFormInner({ onReset }: { onReset: () => void }) {
       >
         <CheckCircle2 className="mx-auto mb-4 h-14 w-14" style={{ color: red }} aria-hidden />
         <h3 className="text-3xl font-bold normal-case tracking-normal md:text-4xl" style={{ color: navy, fontFamily: "inherit" }}>
-          {state.friend ? `${state.friend} is on the list!` : "You're on the list!"}
+          {full
+            ? `${state.friend ?? "Your friend"} is on the waitlist`
+            : state.friend
+              ? `${state.friend} is on the list!`
+              : "You're on the list!"}
         </h3>
         <div
           className="mx-auto mt-5 flex max-w-md items-start gap-3 rounded-xl p-4 text-left"
@@ -123,13 +127,24 @@ function SignupFormInner({ onReset }: { onReset: () => void }) {
         >
           <MailCheck className="mt-0.5 h-6 w-6 shrink-0" style={{ color: steel }} aria-hidden />
           <p style={{ color: navy }}>
-            We just emailed the waiver link to <strong className="break-all">{state.sentTo}</strong>. Their
-            parent signs it on their phone in about 2 minutes.
+            {full ? (
+              <>
+                We emailed <strong className="break-all">{state.sentTo}</strong>. If a spot opens up, we&apos;ll send the
+                waiver link right away.
+              </>
+            ) : (
+              <>
+                We just emailed <strong className="break-all">{state.sentTo}</strong>. Their parent signs the waiver
+                on their phone in about 2 minutes.
+              </>
+            )}
           </p>
         </div>
-        <p className="mt-5" style={{ color: navy }}>
-          See you Saturday, January 23 at 2 PM. Check in at the front desk when you arrive.
-        </p>
+        {!full && (
+          <p className="mt-5" style={{ color: navy }}>
+            See you Saturday, January 23 at 2 PM. Check in at the front desk when you arrive.
+          </p>
+        )}
         <button
           type="button"
           onClick={onReset}
@@ -222,11 +237,13 @@ function SignupFormInner({ onReset }: { onReset: () => void }) {
               <Loader2 className="h-5 w-5 animate-spin" aria-hidden /> Signing up…
             </>
           ) : (
-            "Sign up my friend"
+            full ? "Join the waitlist" : "Sign up my friend"
           )}
         </button>
         <p className="text-center text-sm" style={{ color: steel }}>
-          Free. 1 friend per sign-up. Bringing 2 friends? Send this form twice.
+          {full
+            ? "All 25 spots are taken. Join the waitlist and we'll email you if a spot opens."
+            : "Free. Limited to 25 friends. 1 friend per sign-up; bringing 2? Send this form twice."}
         </p>
       </div>
     </form>

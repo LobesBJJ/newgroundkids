@@ -231,7 +231,7 @@ export function IceCreamEventPage({ event }: { event: RecurringEvent }) {
               <div className="mb-8 text-center">
                 <h2 className={`${gothic.className} text-6xl tracking-wide md:text-7xl`} style={{ color: navy }}>SIGN UP YOUR FRIEND</h2>
                 <p className="mx-auto mt-3 max-w-xl text-lg font-medium">
-                  Each student signs up the friend they&apos;re bringing. We email the waiver to the friend&apos;s parent right away.
+                  Each student signs up the friend they&apos;re bringing. We email the waiver to the friend&apos;s parent right away. Limited to 25 friends.
                 </p>
               </div>
 
@@ -254,7 +254,7 @@ export function IceCreamEventPage({ event }: { event: RecurringEvent }) {
                 ))}
               </ol>
 
-              <IceCreamSignupForm />
+              <IceCreamSignupForm full={event.full} />
 
               <p className="mt-6 text-center text-sm font-medium">
                 Questions? Text us at{" "}
