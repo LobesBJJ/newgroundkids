@@ -80,7 +80,10 @@ export const siteConfig = {
     {
       title: "Events",
       href: "/events",
-      children: [{ title: "Kids Halloween Bash", href: "/events/halloween-bash" }],
+      children: [
+        { title: "Kids Halloween Bash", href: "/events/halloween-bash" },
+        { title: "Ice Cream Social", href: "/events/ice-cream-social" },
+      ],
     },
     { title: "About", href: "/about" },
     { title: "Contact", href: "/contact" },
