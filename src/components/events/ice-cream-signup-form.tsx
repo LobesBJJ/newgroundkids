@@ -1,7 +1,7 @@
 "use client";
 
 import { useActionState, useState } from "react";
-import { CheckCircle2, Loader2, MailCheck } from "lucide-react";
+import { CheckCircle2, ClipboardCheck, Loader2 } from "lucide-react";
 
 import { signUpForIceCreamSocial, type SignupState } from "@/app/actions/ice-cream-social";
 
@@ -125,18 +125,15 @@ function SignupFormInner({ full, onReset }: { full: boolean; onReset: () => void
           className="mx-auto mt-5 flex max-w-md items-start gap-3 rounded-xl p-4 text-left"
           style={{ backgroundColor: honeydew }}
         >
-          <MailCheck className="mt-0.5 h-6 w-6 shrink-0" style={{ color: steel }} aria-hidden />
+          <ClipboardCheck className="mt-0.5 h-6 w-6 shrink-0" style={{ color: steel }} aria-hidden />
           <p style={{ color: navy }}>
             {full ? (
               <>
-                We emailed <strong className="break-all">{state.sentTo}</strong>. If a spot opens up, we&apos;ll send the
-                waiver link right away.
+                All 25 spots are taken. If a spot opens up, we&apos;ll reach out at{" "}
+                <strong className="break-all">{state.sentTo}</strong>.
               </>
             ) : (
-              <>
-                We just emailed <strong className="break-all">{state.sentTo}</strong>. Their parent signs the waiver
-                on their phone in about 2 minutes.
-              </>
+              <>Their parent signs a quick waiver at the front desk when they arrive.</>
             )}
           </p>
         </div>
@@ -186,7 +183,7 @@ function SignupFormInner({ full, onReset }: { full: boolean; onReset: () => void
         <Group
           step={3}
           title="Your friend's parent or guardian"
-          note="We email the waiver link to this parent. They sign it on their phone before the event."
+          note="So we can reach them about the event. They sign a quick waiver at the front desk when they arrive."
         >
           <Field name="parent_first" label="First name" autoComplete="off" state={state} />
           <Field name="parent_last" label="Last name" required={false} autoComplete="off" state={state} />

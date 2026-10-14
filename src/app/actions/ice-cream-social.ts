@@ -5,8 +5,8 @@ import { headers } from "next/headers";
 import { checkRateLimit } from "@/lib/rate-limit";
 
 // Zapier workflow "ice-cream-social-signup": adds the friend to the ClickUp roster
-// and emails the waiver link to the friend's parent from hello@newgroundjiujitsu.com.
-const SIGNUP_HOOK = "__ZAPIER_HOOK__";
+// "Ice Cream Social · Jan 23, 2027" (waiver is signed in person at check-in).
+const SIGNUP_HOOK = "https://hooks.zapier.com/hooks/catch/26294258/0zHO1aOskovhpPGG/";
 
 const name = (label: string) =>
   z
