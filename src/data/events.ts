@@ -176,6 +176,8 @@ export const upcomingEvents: RecurringEvent[] = [
       "Food and drinks are included",
       "The movie is kid-friendly \u2014 spooky, not scary",
     ],
+    // Sold out (Oct 24, 2026): every ticket button shows "Sold Out"
+    full: true,
     calEventSlug: "halloween-bash-1-child",
     calMonth: "2026-10",
     calDate: "2026-10-24",
