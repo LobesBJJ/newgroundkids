@@ -90,6 +90,7 @@ function DisplayText({
 
 export function HalloweenEventPage({ event }: { event: RecurringEvent }) {
   const tiers = event.tiers ?? [];
+  const soldOut = event.full === true;
   const calConfig =
     event.calMonth || event.calDate
       ? { ...(event.calMonth && { month: event.calMonth }), ...(event.calDate && { date: event.calDate }) }
@@ -201,6 +202,7 @@ export function HalloweenEventPage({ event }: { event: RecurringEvent }) {
                 <div className="animate-slide-up animation-delay-400 mt-9 flex flex-col items-center gap-3 sm:flex-row sm:justify-center lg:justify-start">
                   <a
                     href="#tickets"
+                    aria-disabled={soldOut || undefined}
                     className={`${luckiest.className} inline-flex h-14 items-center justify-center gap-3 rounded-full border-4 px-7 text-lg tracking-wide uppercase transition-transform hover:scale-105 sm:h-16 sm:px-10 sm:text-xl`}
                     style={{
                       backgroundColor: pumpkin,
@@ -210,10 +212,14 @@ export function HalloweenEventPage({ event }: { event: RecurringEvent }) {
                     }}
                   >
                     <Ticket className="h-6 w-6" />
-                    Get Tickets · from ${tiers[0]?.price ?? event.pricing.perChild}
+                    {soldOut
+                      ? "Sold Out!"
+                      : `Get Tickets · from $${tiers[0]?.price ?? event.pricing.perChild}`}
                   </a>
                   <span className="text-sm" style={{ color: creamMuted }}>
-                    1 child $50 · 2 kids $60 · 3 kids $70
+                    {soldOut
+                      ? "Thanks for the love! See you at the next one."
+                      : "1 child $50 · 2 kids $60 · 3 kids $70"}
                   </span>
                 </div>
               </div>
@@ -276,7 +282,7 @@ export function HalloweenEventPage({ event }: { event: RecurringEvent }) {
                 className={`${creepster.className} text-5xl tracking-wide md:text-6xl`}
                 style={{ color: pumpkin }}
               >
-                Pick Your Ticket
+                {soldOut ? "Sold Out!" : "Pick Your Ticket"}
               </h2>
               <p className="mx-auto mt-4 max-w-2xl text-lg" style={{ color: cream }}>
                 Bringing more than one kid? Choose the option that matches how many you&apos;re
@@ -336,6 +342,17 @@ export function HalloweenEventPage({ event }: { event: RecurringEvent }) {
                             Book {tier.kids === 1 ? "1 Child" : `${tier.kids} Kids`} · ${tier.price}
                           </>
                         );
+                        if (soldOut) {
+                          return (
+                            <span
+                              aria-disabled="true"
+                              className={`${luckiest.className} flex h-14 w-full cursor-not-allowed items-center justify-center gap-2 rounded-full border-2 text-lg tracking-wide uppercase`}
+                              style={{ borderColor: creamMuted, color: creamMuted }}
+                            >
+                              Sold Out
+                            </span>
+                          );
+                        }
                         return tier.checkoutUrl ? (
                           <a href={tier.checkoutUrl} className={buttonClass} style={buttonStyle}>
                             {buttonLabel}
@@ -365,7 +382,9 @@ export function HalloweenEventPage({ event }: { event: RecurringEvent }) {
               <p>
                 The 2-kid and 3-kid tickets are for siblings from the same family. You&apos;ll enter
                 each child&apos;s name and age at checkout, and one confirmation email covers everyone.
-                Spots are limited, so grab yours early.
+                {soldOut
+                  ? "This one is sold out. Thanks to every family who grabbed a spot!"
+                  : "Spots are limited, so grab yours early."}
               </p>
             </div>
           </Container>
@@ -533,7 +552,7 @@ export function HalloweenEventPage({ event }: { event: RecurringEvent }) {
                       style={{ backgroundColor: ink, color: slime }}
                     >
                       <Ticket className="h-5 w-5" />
-                      Reserve a Spot
+                      {soldOut ? "Sold Out" : "Reserve a Spot"}
                     </a>
                     <p className="mt-4 text-center text-sm opacity-70">
                       Questions? Call{" "}
